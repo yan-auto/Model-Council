@@ -1,0 +1,45 @@
+# Council 系统配置
+# 所有凭证从 .env 读取，此文件只放业务配置
+
+app:
+  name: "Council"
+  version: "0.1.0"
+  host: "0.0.0.0"
+  port: 8000
+
+# 数据目录
+data:
+  db_path: "data/db/council.db"
+  vectors_path: "data/vectors"
+
+# 记忆配置
+memory:
+  short_term_max_tokens: 8000   # 单次上下文窗口上限
+  long_term_enabled: true       # 跨对话记忆
+
+# 模型路由
+# priority: 数字越小优先级越高，按顺序选第一个可用的
+model_routing:
+  default: "openai"
+  openai:
+    model: "gpt-4o-mini"
+    temperature: 0.7
+    max_tokens: 2048
+  anthropic:
+    model: "claude-sonnet-4-7-20250514"
+    temperature: 0.7
+    max_tokens: 2048
+  deepseek:
+    model: "deepseek-chat"
+    temperature: 0.7
+    max_tokens: 2048
+
+# SSE / WebSocket 超时（秒）
+stream:
+  timeout: 300
+  heartbeat_interval: 30
+
+# 限流（本地单用户场景下基本不触发）
+rate_limit:
+  requests_per_minute: 60
+  burst: 10
