@@ -13,6 +13,8 @@ venv/
 
 # 数据
 data/db/*.db
+data/db/*.db-shm
+data/db/*.db-wal
 data/vectors/
 
 # IDE
