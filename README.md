@@ -1,5 +1,420 @@
 # Council
 
+A local, privacy-first multi-agent AI council system for personal decision-making and brainstorming.
+
+Have conversations with multiple AI personas, leverage persistent memory, and enable dynamic discussions—all while keeping your data local.
+
+**Features:** Multi-agent collaboration | Persistent memory across sessions | Real-time streaming | Pluggable LLM providers | WebSocket discussions | 100% local storage
+
+---
+
+## 🎯 Core Features
+
+### Multi-Agent Collaboration
+- **4 Built-in Personas**: Strategist, Perspectivist, Supervisor, Social Coach
+- **Custom Personas**: Define your own with YAML templates
+- **Routing**: Direct messages to specific agents or broadcast to all (`@strategist`, `@all`)
+- **Role Awareness**: Each agent remembers you across conversations
+
+### Persistent Memory System
+- **User Profile**: Personal background, goals, constraints
+- **Cross-conversation Summaries**: Remember context from previous talks
+- **Agent Memory**: Each persona tracks relevant facts about you
+- **Action Tracking**: Commitments and followups persisted in database
+
+### Discussion Mode
+- **Multi-turn Discussions**: Agents take turns, build on each other
+- **Consensus Detection**: Automatic agreement discovery
+- **Voting System**: Structured decision-making
+- **WebSocket Support**: Real-time discussion updates
+
+### Real-Time Streaming
+- **SSE Integration**: See AI responses token-by-token
+- **No Buffering**: Results appear as they're generated
+- **Graceful Fallback**: Works even if streaming fails
+
+### Provider Agnostic
+- **OpenAI Compatible**: Any OpenAI-compatible endpoint
+- **Native Support**: Anthropic, DeepSeek, MiniMax
+- **Mix & Match**: Different models for different agents
+- **Easy Swapping**: Switch providers via UI
+
+### Privacy First
+- **100% Local Data**: SQLite database on your machine
+- **No Cloud Sync**: Your conversations stay yours
+- **Disconnect Anytime**: Close the app, take your data
+- **Encrypted Credentials**: API keys encrypted at rest
+
+---
+
+## 🚀 Quick Start
+
+### Option 1: Docker (Recommended)
+
+```bash
+git clone https://github.com/yan-auto/Model-Council.git
+cd Model-Council
+
+# Copy environment template
+cp .env.example .env
+
+# Edit .env with your API keys
+# (OpenAI API key, Anthropic API key, etc.)
+
+# Start the system
+docker-compose up -d
+
+# Open http://localhost:8000
+```
+
+### Option 2: Manual Setup
+
+**Backend:**
+```bash
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+pip install -e ".[dev]"
+
+cp .env.example .env
+# Edit .env with your API credentials
+
+python -m src.api.main
+```
+
+**Frontend:**
+```bash
+cd web
+npm install
+npm run build
+```
+
+Then visit `http://localhost:8000`
+
+### Option 3: Development Mode
+
+**Terminal 1 - Backend (with hot reload):**
+```bash
+python -m src.api.main
+```
+
+**Terminal 2 - Frontend (with hot reload):**
+```bash
+cd web && npm run dev
+# Frontend at http://localhost:5173
+```
+
+---
+
+## 📋 Requirements
+
+- **Python**: 3.11+
+- **Node.js**: 18+
+- **Docker** (optional, if using Docker Compose)
+- **API Keys** (at least one):
+  - OpenAI API key, OR
+  - Anthropic API key, OR
+  - Other compatible provider (DeepSeek, MiniMax, etc.)
+
+---
+
+## 🤖 Built-in Personas
+
+| Persona | Name | Role | Best For |
+|---------|------|------|----------|
+| 🎯 **Strategist** | `strategist` | Career & business decisions | Job offers, side projects, strategy calls |
+| 🔍 **Perspectivist** | `perspectivist` | News analysis & big picture | Understanding headlines, social trends |
+| 📌 **Supervisor** | `supervisor` | Action tracking & accountability | Weekly reviews, progress checks |
+| 💬 **Social Coach** | `social_coach` | Social & relationship advice | Communication, networking, relationships |
+
+Each persona is **aware of your profile** and remembers details across conversations.
+
+---
+
+## 💬 Usage Guide
+
+### Basic Chat
+
+Simply type a message and press Enter. The default persona will respond.
+
+### Mention Specific Personas
+
+Route your message to a specific persona:
+
+```
+@strategist Should I take this job offer?
+@perspectivist What does the latest news about AI mean?
+@social_coach How should I handle this conflict with my colleague?
+@all What do you all think about this?
+```
+
+### Commands
+
+| Command | Effect |
+|---------|--------|
+| `/list` | Show all available personas |
+| `/add <name>` | Add a persona to current conversation |
+| `/remove <name>` | Remove a persona from current conversation |
+| `/discuss <topic>` | Start a multi-agent discussion |
+| `/stop` | Stop current discussion |
+| `/memory` | View memory status for this conversation |
+| `/save` | Manually save conversation summary to memory |
+| `/model <persona> <model>` | Assign a specific model to a persona |
+
+### Discussion Mode
+
+Start a structured discussion with multiple personas:
+
+```
+/discuss Should I switch to freelancing full-time?
+```
+
+Personas will:
+1. Each give their perspective
+2. Build on each other's points
+3. Reach toward consensus
+4. Present final recommendation
+
+---
+
+## 🏗️ Architecture
+
+```
+Council/
+├── src/
+│   ├── api/              # FastAPI server
+│   │   ├── routes/       # REST endpoints
+│   │   └── middleware/   # Auth, rate limiting
+│   ├── core/             # Agent orchestration
+│   │   ├── agent_loader.py  # Load personas from YAML
+│   │   ├── agent_router.py  # Route messages to agents
+│   │   ├── orchestrator.py   # Discussion coordinator
+│   │   └── event_bus.py      # Event pub/sub
+│   ├── services/         # Business logic
+│   │   ├── memory_service.py     # Cross-conversation memory
+│   │   └── model_router.py       # LLM provider selection
+│   ├── adapters/         # LLM provider integrations
+│   │   ├── openai_adapter.py
+│   │   └── anthropic_adapter.py
+│   ├── data/             # Database & persistence
+│   │   ├── database.py
+│   │   ├── models.py     # Pydantic schemas
+│   │   └── repositories/ # Data access layer
+│   └── security/         # Encryption & secrets
+├── config/
+│   └── agents/           # YAML persona definitions
+├── web/                  # React frontend
+│   ├── src/
+│   │   ├── pages/        # Page components
+│   │   ├── components/   # Reusable UI
+│   │   └── api.js        # Backend client
+│   └── vite.config.js
+├── data/
+│   ├── db/               # SQLite databases
+│   └── vectors/          # ChromaDB memory
+├── tests/
+└── docker-compose.yml
+```
+
+---
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Create/edit `.env`:
+
+```env
+# LLM Providers
+OPENAI_API_KEY=sk-...
+ANTHROPIC_API_KEY=sk-ant-...
+
+# Auth (for this local instance)
+COUNCIL_AUTH_TOKEN=council-local
+
+# Server
+COUNCIL_HOST=localhost
+COUNCIL_PORT=8000
+
+# Data directory
+COUNCIL_DATA_DIR=./data
+
+# Encryption (optional, for production)
+COUNCIL_ENCRYPTION_KEY=<fernet-key>
+```
+
+### Custom Personas
+
+Add your own persona by creating a YAML file in `config/agents/`:
+
+```yaml
+# config/agents/mentor.yaml
+name: Mentor
+description: A wise career counselor with 20 years of experience
+
+personality:
+  tone: wise and encouraging
+  traits:
+    - patient
+    - strategic
+    - empathetic
+  constraints: "Always ask clarifying questions before giving advice"
+
+system_prompt: |
+  You are an experienced career mentor. Your role is to help people make
+  informed decisions about their career path. You remember details from
+  previous conversations about the user's situation.
+```
+
+Restart the server. The new persona will appear in `/list`.
+
+---
+
+## 🔐 Security
+
+### Authentication
+- **Local by default**: Simple token validation for localhost
+- **Production deployment**: Use strong `COUNCIL_AUTH_TOKEN` and secure CORS
+- **Timing attack prevention**: Constant-time token comparison
+
+### Data Privacy
+- **No cloud storage**: Your conversations stay on your machine
+- **Encrypted credentials**: API keys encrypted at rest using Fernet
+- **CORS restricted**: Only localhost allowed by default
+- **Session storage**: Frontend tokens in sessionStorage (auto-cleared on browser close)
+
+### Best Practices
+- Store API keys in `.env`, never commit to git
+- Use unique, strong `COUNCIL_AUTH_TOKEN` in production
+- Enable `COUNCIL_ENCRYPTION_KEY` before deploying to production
+- Monitor logs for unauthorized access attempts
+
+---
+
+## 📦 Installation from Source
+
+### Prerequisites
+- Python 3.11+
+- Node.js 18+
+- pip and npm
+
+### Steps
+
+```bash
+# Clone
+git clone https://github.com/yan-auto/Model-Council.git
+cd Model-Council
+
+# Backend setup
+python -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+
+# Frontend setup
+cd web
+npm install
+npm run build
+cd ..
+
+# Configure
+cp .env.example .env
+# Edit .env with your API keys
+
+# Run
+python -m src.api.main
+# Visit http://localhost:8000
+```
+
+---
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+pytest
+
+# With coverage
+pytest --cov=src tests/
+
+# Watch mode (requires pytest-watch)
+ptw
+```
+
+---
+
+## 📚 API Endpoints
+
+### Chat
+- `POST /api/conversations` — Create new conversation
+- `GET /api/conversations` — List conversations
+- `GET /api/conversations/{id}` — Get conversation + messages
+- `POST /api/chat` — Send message (SSE stream)
+- `DELETE /api/conversations/{id}` — Archive conversation
+
+### Agents
+- `GET /api/agents` — List available personas
+- `GET /api/agents/{name}` — Get persona details
+
+### Providers
+- `GET /api/providers` — List configured LLM providers
+- `POST /api/providers` — Add new provider
+- `PUT /api/providers/{id}` — Update provider
+- `DELETE /api/providers/{id}` — Remove provider
+
+### Discussion
+- `WS /ws/discuss` — WebSocket for real-time discussions
+
+### Utilities
+- `GET /health` — Health check
+- `GET /` — Server info
+
+---
+
+## 🐳 Docker Deployment
+
+### Single Container
+```bash
+docker build -t council:latest .
+docker run -p 8000:8000 \
+  -e OPENAI_API_KEY=sk-... \
+  -e COUNCIL_AUTH_TOKEN=<secure-token> \
+  -v council_data:/app/data \
+  council:latest
+```
+
+### Docker Compose (Recommended)
+```bash
+docker-compose up -d
+# Includes: Council service, volume mounts, health checks
+```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
+- Code style (PEP 8 for Python, ESLint for JS)
+- Testing requirements
+- Pull request process
+- Security considerations
+
+---
+
+## 📝 License
+
+MIT License — see [LICENSE](LICENSE) for details.
+
+---
+
+## 🙋 Support & Feedback
+
+- **Issues**: [GitHub Issues](https://github.com/yan-auto/Model-Council/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yan-auto/Model-Council/discussions)
+
+---
+
+**Made for people who want to think better, faster, and with multiple perspectives.**
+# Council
+
 本地私人 AI 委员会系统。多角色、有记忆、能讨论。
 
 ## 核心特性
