@@ -52,12 +52,19 @@ def create_app() -> FastAPI:
     app.add_middleware(RateLimitMiddleware, requests_per_minute=rl.requests_per_minute, burst=rl.burst)
 
     # CORS（最后添加 = 最先执行，确保预检请求不被其他中间件拦截）
+    # 仅允许 localhost 和配置中指定的域名，防止 CSRF 攻击
+    allowed_origins = settings.cors.allowed_origins if hasattr(settings, 'cors') else [
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:5173",
+    ]
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
+        allow_origins=allowed_origins,
         allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allow_headers=["Content-Type", "Authorization"],
     )
 
     # 路由

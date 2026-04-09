@@ -5,7 +5,8 @@
 const API_BASE = import.meta.env.VITE_API_BASE || '';
 
 function getToken() {
-  return localStorage.getItem('council_token') || 'council-local';
+  // 使用 sessionStorage 而非 localStorage，防止 XSS 攻击时 token 被长期窃取
+  return sessionStorage.getItem('council_token') || 'council-local';
 }
 
 export function authHeaders() {

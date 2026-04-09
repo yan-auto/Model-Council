@@ -31,8 +31,7 @@ COPY --from=frontend-build /build/web/dist /app/web/dist
 # 数据目录
 RUN mkdir -p /app/data/db /app/data/vectors
 
-# 环境变量默认值
-ENV COUNCIL_AUTH_TOKEN=council-local
+# 环境变量必须从启动时传入，不在镜像中硬编码敏感凭证
 ENV COUNCIL_DATA_DIR=/app/data
 
 EXPOSE 8000

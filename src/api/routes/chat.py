@@ -82,61 +82,85 @@ async def archive_conversation(conv_id: str):
 @router.post("/chat")
 async def chat(data: MessageCreate):
     """SSE 流式聊天"""
-    conv_id = data.conversation_id if hasattr(data, "conversation_id") else None
-
-    # 确保有对话
-    if conv_id:
-        conv = await conversation_repo.get_conversation(conv_id)
-        if conv is None:
-            conv_id = None
-
-    if not conv_id:
-        conv = await conversation_repo.create_conversation(ConversationCreate())
-        conv_id = conv.id
-
-    # 解析指令
     try:
-        cmd = parse_command(data.content)
-    except ValueError as e:
-        return JSONResponse(status_code=400, content={"error": str(e)})
+        # 输入验证
+        if not data.content or not isinstance(data.content, str):
+            return JSONResponse(
+                status_code=400,
+                content={"error": "消息内容不能为空"}
+            )
+        
+        # 防止超长消息（DoS 防护）
+        if len(data.content) > 10000:
+            return JSONResponse(
+                status_code=400,
+                content={"error": "消息超过最大长度限制（10000 字符）"}
+            )
+        
+        conv_id = data.conversation_id if hasattr(data, "conversation_id") else None
 
-    # ── 指令分发 ──────────────────────────────
+        # 确保有对话
+        if conv_id:
+            conv = await conversation_repo.get_conversation(conv_id)
+            if conv is None:
+                conv_id = None
 
-    if cmd.type == CommandType.DISCUSS:
-        return JSONResponse(content={
-            "mode": "discussion",
-            "conversation_id": conv_id,
-            "topic": cmd.content,
-            "message": "讨论模式请使用 WebSocket: ws://host/ws/discuss",
-        })
+        if not conv_id:
+            conv = await conversation_repo.create_conversation(ConversationCreate())
+            conv_id = conv.id
 
-    if cmd.type == CommandType.STOP:
-        return JSONResponse(content={"status": "stopped", "message": "讨论已停止"})
+        # 解析指令
+        try:
+            cmd = parse_command(data.content)
+        except ValueError as e:
+            return JSONResponse(status_code=400, content={"error": str(e)})
 
-    if cmd.type == CommandType.ADD_AGENT:
-        return await _handle_add_agent(cmd)
+        # ── 指令分发 ──────────────────────────────
 
-    if cmd.type == CommandType.REMOVE_AGENT:
-        return await _handle_remove_agent(cmd)
+        if cmd.type == CommandType.DISCUSS:
+            return JSONResponse(content={
+                "mode": "discussion",
+                "conversation_id": conv_id,
+                "topic": cmd.content,
+                "message": "讨论模式请使用 WebSocket: ws://host/ws/discuss",
+            })
 
-    if cmd.type == CommandType.LIST_AGENTS:
-        return await _handle_list_agents()
+        if cmd.type == CommandType.STOP:
+            return JSONResponse(content={"status": "stopped", "message": "讨论已停止"})
 
-    if cmd.type == CommandType.MEMORY:
-        return await _handle_memory(conv_id)
+        if cmd.type == CommandType.ADD_AGENT:
+            return await _handle_add_agent(cmd)
 
-    if cmd.type == CommandType.SAVE:
-        return await _handle_save(conv_id)
+        if cmd.type == CommandType.REMOVE_AGENT:
+            return await _handle_remove_agent(cmd)
 
-    if cmd.type == CommandType.CHANGE_MODEL:
-        return await _handle_change_model(cmd)
+        if cmd.type == CommandType.LIST_AGENTS:
+            return await _handle_list_agents()
 
-    # ── @all：依次发给所有活跃角色 ─────────────
-    if cmd.type == CommandType.CHAT_ALL:
-        return await _handle_chat_all(cmd, conv_id, image_data=data.image_data)
+        if cmd.type == CommandType.MEMORY:
+            return await _handle_memory(conv_id)
 
-    # ── 普通聊天（单角色） ──────────────────────
-    return await _handle_single_chat(cmd, conv_id, data.content, image_data=data.image_data)
+        if cmd.type == CommandType.SAVE:
+            return await _handle_save(conv_id)
+
+        if cmd.type == CommandType.CHANGE_MODEL:
+            return await _handle_change_model(cmd)
+
+        # ── @all：依次发给所有活跃角色 ─────────────
+        if cmd.type == CommandType.CHAT_ALL:
+            return await _handle_chat_all(cmd, conv_id, image_data=data.image_data)
+
+        # ── 普通聊天（单角色） ──────────────────────
+        return await _handle_single_chat(cmd, conv_id, data.content, image_data=data.image_data)
+    
+    except Exception as e:
+        import logging
+        logger = logging.getLogger("council.chat")
+        logger.error(f"聊天处理异常：{str(e)}", exc_info=True)
+        return JSONResponse(
+            status_code=500,
+            content={"error": "处理请求时出错，请稍后重试"}
+        )
 
 
 async def _handle_single_chat(cmd, conv_id, raw_content, image_data=None):

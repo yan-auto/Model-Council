@@ -1,4 +1,10 @@
-"""Pydantic 数据模型 —— 贯穿全层的数据结构"""
+"""Pydantic 数据模型 —— 贯穿全层的数据结构
+
+安全提示：
+- API 密钥应该使用加密存储（在 Repository 层处理）
+- 不应该在 API 响应中返回完整密钥
+- 属于敏感信息，不应该在日志中打印
+"""
 
 from __future__ import annotations
 

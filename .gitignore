@@ -6,10 +6,17 @@ build/
 .eggs/
 *.egg
 
-# 环境
+# 环境和密钥（绝不要上传）
 .env
+.env.local
+.env.*.local
 .venv/
 venv/
+*.pem
+*.key
+*.crt
+id_rsa
+id_rsa.pub
 
 # 数据
 data/db/*.db
@@ -22,16 +29,33 @@ data/backups/
 # IDE
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
+.vscode/settings.json
+.vscode/launch.json
 
 # 前端
 web/node_modules/
 web/dist/
+web/.env.local
 
 # 测试
 .coverage
 htmlcov/
 .pytest_cache/
+*.coverage
 
 # 系统文件
 .DS_Store
 Thumbs.db
+.env.example
+
+# Claude 本地配置（仅开发用）
+.claude/settings.local.json
+
+# 临时文件
+*.tmp
+*.log
+*.swp
+

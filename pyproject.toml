@@ -15,6 +15,7 @@ dependencies = [
     "pydantic-settings>=2.0.0",
     "sse-starlette>=2.0.0",
     "websockets>=13.0",
+    "cryptography>=41.0.0",  # 用于 API 密钥加密存储
 ]
 
 [project.optional-dependencies]
