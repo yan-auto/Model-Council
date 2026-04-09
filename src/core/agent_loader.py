@@ -50,5 +50,5 @@ def get_default_agent_name() -> str:
     """返回默认角色名（按字母顺序第一个）"""
     agents = load_all_agents()
     if not agents:
-        return "promoter"
+        return "strategist"
     return sorted(a.name for a in agents)[0]

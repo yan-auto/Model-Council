@@ -1,7 +1,8 @@
 """WebSocket 讨论 API
 
 多角色讨论走 WebSocket，支持：
-- 实时接收每个角色的 token 流
+- 实时接收每个角色的 token 流（thinking → token → done）
+- 最后一轮自动投票
 - 客户端中途 /stop 停止讨论
 """
 
@@ -23,10 +24,24 @@ router = APIRouter(tags=["discussion"])
 # 当前活跃的讨论（conv_id → orchestrator）
 _active_discussions: dict[str, DiscussionOrchestrator] = {}
 
+# 需要订阅的所有讨论事件类型
+_DISCUSSION_EVENTS = [
+    EventType.DISCUSSION_STARTED,
+    EventType.DISCUSSION_AGENT_THINKING,
+    EventType.DISCUSSION_AGENT_TURN,
+    EventType.DISCUSSION_AGENT_DONE,
+    EventType.DISCUSSION_ROUND_DONE,
+    EventType.DISCUSSION_VOTE_START,
+    EventType.DISCUSSION_VOTE,
+    EventType.DISCUSSION_VOTE_RESULT,
+    EventType.DISCUSSION_CONSENSUS,
+]
+
 
 @router.websocket("/ws/discuss")
 async def websocket_discuss(websocket: WebSocket):
     await websocket.accept()
+    conv_id = None
 
     try:
         # 等待客户端发送讨论配置
@@ -42,7 +57,7 @@ async def websocket_discuss(websocket: WebSocket):
         all_agents = {a.name for a in load_all_agents()}
         agent_names = [n for n in agent_names if n in all_agents]
         if not agent_names:
-            agent_names = [a.name for a in load_all_agents()[:3]]  # 默认前3个
+            agent_names = [a.name for a in load_all_agents()[:3]]
 
         # 确保有对话
         if not conv_id:
@@ -73,35 +88,36 @@ async def websocket_discuss(websocket: WebSocket):
         event_bus = get_event_bus()
 
         async def on_event(event: Event):
+            """将 Event Bus 事件转发给 WebSocket 客户端"""
             try:
-                await websocket.send_text(event.model_dump_json())
+                payload = {
+                    "type": event.type.value if hasattr(event.type, "value") else str(event.type),
+                    "data": event.data,
+                    "source": event.source,
+                }
+                await websocket.send_text(json.dumps(payload, ensure_ascii=False))
             except Exception:
                 pass
 
-        event_bus.subscribe(EventType.DISCUSSION_STARTED, on_event)
-        event_bus.subscribe(EventType.DISCUSSION_AGENT_TURN, on_event)
-        event_bus.subscribe(EventType.DISCUSSION_ROUND_DONE, on_event)
-        event_bus.subscribe(EventType.DISCUSSION_CONSENSUS, on_event)
+        for et in _DISCUSSION_EVENTS:
+            event_bus.subscribe(et, on_event)
 
-        # 运行讨论
+        # 运行讨论（阻塞直到完成）
         await orchestrator.run()
 
         # 清理
         _active_discussions.pop(conv_id, None)
-        event_bus.unsubscribe(EventType.DISCUSSION_STARTED, on_event)
-        event_bus.unsubscribe(EventType.DISCUSSION_AGENT_TURN, on_event)
-        event_bus.unsubscribe(EventType.DISCUSSION_ROUND_DONE, on_event)
-        event_bus.unsubscribe(EventType.DISCUSSION_CONSENSUS, on_event)
+        for et in _DISCUSSION_EVENTS:
+            event_bus.unsubscribe(et, on_event)
 
     except WebSocketDisconnect:
-        # 客户端断开，停止讨论
         if conv_id and conv_id in _active_discussions:
             _active_discussions[conv_id].stop()
     except json.JSONDecodeError:
-        await websocket.send_text(json.dumps({"error": "无效的 JSON"}))
+        await websocket.send_text(json.dumps({"type": "error", "data": {"error": "无效的 JSON"}}))
     except Exception as e:
         try:
-            await websocket.send_text(json.dumps({"error": str(e)}))
+            await websocket.send_text(json.dumps({"type": "error", "data": {"error": str(e)}}))
         except Exception:
             pass
     finally:

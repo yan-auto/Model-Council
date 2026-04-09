@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Manrope:wght@200..800&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#dde4e2",
+                        "on-surface": "#1a1c1c",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "surface-container": "#eeeeed",
+                        "primary-fixed": "#d8e2ff",
+                        "on-secondary-fixed": "#161d1c",
+                        "primary": "#004496",
+                        "on-primary-container": "#cbdaff",
+                        "surface-container-high": "#e8e8e7",
+                        "surface-dim": "#dadad9",
+                        "primary-fixed-dim": "#adc6ff",
+                        "on-tertiary-fixed": "#360f00",
+                        "on-error": "#ffffff",
+                        "secondary": "#59605f",
+                        "outline-variant": "#c2c6d5",
+                        "error": "#ba1a1a",
+                        "surface": "#f9f9f8",
+                        "primary-container": "#005bc4",
+                        "surface-variant": "#e2e2e2",
+                        "on-primary-fixed": "#001a42",
+                        "tertiary-fixed": "#ffdbcd",
+                        "inverse-primary": "#adc6ff",
+                        "surface-container-highest": "#e2e2e2",
+                        "inverse-on-surface": "#f1f1f0",
+                        "secondary-fixed-dim": "#c1c8c7",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-tint": "#005ac2",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2f3130",
+                        "on-secondary-container": "#5f6665",
+                        "tertiary": "#7e2e00",
+                        "on-secondary-fixed-variant": "#414847",
+                        "error-container": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#1a1c1c",
+                        "on-tertiary-container": "#ffd0bc",
+                        "on-primary-fixed-variant": "#004395",
+                        "surface-bright": "#f9f9f8",
+                        "secondary-container": "#dde4e2",
+                        "on-tertiary-fixed-variant": "#7c2e00",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f3f4f3",
+                        "tertiary-container": "#a43f01",
+                        "on-surface-variant": "#424753",
+                        "outline": "#727784",
+                        "on-error-container": "#93000a",
+                        "background": "#f9f9f8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased overflow-hidden h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface/80 backdrop-blur-md flex justify-between items-center px-4 h-16 w-full fixed top-0 z-40 border-b border-outline-variant/10">
+<div class="flex items-center gap-1">
+<button class="w-12 h-12 flex items-center justify-center hover:bg-surface-container-high transition-colors rounded-full active:bg-surface-variant">
+<span class="material-symbols-outlined text-[#005bc4] text-2xl">menu</span>
+</button>
+<h1 class="font-headline tracking-tight font-bold text-xl text-on-surface">Council</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined text-secondary text-2xl">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="Professional executive headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTOi42mNcVtS-rOZoLe-_PLMgB0ZUlxiOUQyr3bdaXe5kRvNB94AABIbJIK0FofbzQQKvAEybXDY1i4XyAn-4joEwcZ-ZjMFv0RL0kI2HTpqEwCQO45RpsJXubGdkWxNPzhXFK5MU0ZU2SBIe3btUg0xZSW0OCeeRjd4Q0_1bM8x85ksa-EnMxiaMUwSouI2J0KhPibn0M3w5Y1Ot4LAmAyuG4HPJY307HztF48A56bSraL6qW8i5lxB3GVrbIoIhi-xEBCTPs1wI"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 mt-16 pb-[180px] overflow-y-auto no-scrollbar relative">
+<!-- Role Selector Pills (Floating Header) -->
+<div class="sticky top-0 z-30 bg-surface/90 backdrop-blur-md px-4 py-3 flex gap-2 overflow-x-auto no-scrollbar border-b border-outline-variant/10">
+<button class="flex-none px-5 py-2 rounded-full bg-primary text-on-primary font-label text-xs font-bold transition-all shadow-sm">
+                Facilitator
+            </button>
+<button class="flex-none px-5 py-2 rounded-full bg-secondary-container text-on-secondary-container font-label text-xs font-bold hover:bg-surface-container-high transition-all">
+                Perspective
+            </button>
+<button class="flex-none px-5 py-2 rounded-full bg-secondary-container text-on-secondary-container font-label text-xs font-bold hover:bg-surface-container-high transition-all">
+                Logistics
+            </button>
+<button class="flex-none px-5 py-2 rounded-full bg-secondary-container text-on-secondary-container font-label text-xs font-bold hover:bg-surface-container-high transition-all">
+                Skeptic
+            </button>
+</div>
+<!-- Chat Feed -->
+<div class="max-w-2xl mx-auto px-4 py-6 space-y-8">
+<!-- Message: Facilitator -->
+<div class="flex flex-col items-center gap-3">
+<div class="flex items-center gap-2 mb-1">
+<div class="px-2 py-0.5 bg-primary-fixed text-on-primary-fixed font-label text-[10px] font-bold uppercase tracking-wider rounded">Facilitator</div>
+</div>
+<div class="flex flex-col items-center text-center space-y-4">
+<p class="text-on-surface text-lg font-medium leading-relaxed max-w-md">
+                        Good morning, Protocol Lead. The Council is assembled. We are reviewing the Q4 strategic alignment for the global initiatives. Where should we begin our inquiry?
+                    </p>
+</div>
+</div>
+<!-- Message Bubble: User -->
+<div class="flex flex-col items-end gap-2">
+<div class="bg-surface-container-high rounded-2xl rounded-tr-none px-5 py-3 max-w-[85%] shadow-sm border border-outline-variant/10">
+<p class="text-on-surface-variant text-sm">Analyze the risk factors associated with the regional expansion. I want the Skeptic to weigh in first.</p>
+</div>
+<span class="text-[10px] font-label font-medium text-secondary mr-2">Sent 09:41 AM</span>
+</div>
+<!-- Message: Skeptic -->
+<div class="flex gap-3">
+<div class="flex-none w-8 h-8 rounded-full bg-tertiary-fixed flex items-center justify-center mt-1">
+<span class="material-symbols-outlined text-tertiary text-lg">gavel</span>
+</div>
+<div class="flex-1 space-y-2">
+<div class="flex items-center gap-2">
+<span class="font-headline font-bold text-sm">Skeptic</span>
+<span class="text-[10px] font-label text-secondary">09:42 AM</span>
+</div>
+<div class="bg-surface-container-low border-l-4 border-tertiary-container p-4 rounded-xl shadow-sm">
+<p class="text-on-surface-variant text-sm leading-relaxed">
+                            The current expansion model assumes a linear market penetration that hasn't been validated in the Southeast sector. We're ignoring the regulatory shifts happening next month. It's a high-probability failure point.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Bento Card: Protocol Status -->
+<div class="grid grid-cols-2 gap-3 mt-4">
+<div class="col-span-2 bg-surface-container p-5 rounded-2xl border border-outline-variant/10">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-headline font-bold text-sm uppercase tracking-tight">Active Protocol</h3>
+<span class="material-symbols-outlined text-primary">analytics</span>
+</div>
+<div class="space-y-3">
+<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary w-2/3"></div>
+</div>
+<div class="flex justify-between text-[11px] font-label font-bold text-secondary">
+<span>RISK ASSESSMENT</span>
+<span>67% COMPLETE</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Interactive Bottom Layer -->
+<div class="fixed bottom-0 left-0 w-full z-50">
+<!-- Floating Todo Card -->
+<div class="px-4 mb-3 flex justify-center">
+<div class="w-full max-w-md bg-surface-container-highest/95 backdrop-blur-md shadow-lg rounded-2xl p-4 flex items-center justify-between border border-white/20">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">assignment</span>
+</div>
+<div>
+<p class="font-headline font-bold text-xs">Review Risk Report</p>
+<p class="text-[10px] font-label text-secondary">Assigned by Facilitator</p>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-wider active:scale-95 transition-transform">
+                    Open
+                </button>
+</div>
+</div>
+<!-- Glassmorphism Input & Navigation Area -->
+<div class="bg-surface/95 backdrop-blur-xl border-t border-outline-variant/10 shadow-[0_-8px_30px_rgb(0,0,0,0.04)]">
+<!-- Refined Input Field -->
+<div class="max-w-2xl mx-auto px-4 pt-4 pb-2">
+<div class="relative flex items-center gap-2">
+<div class="flex-1 bg-surface-container-high rounded-full px-5 py-3.5 flex items-center gap-3 border border-outline-variant/20 focus-within:border-primary/40 focus-within:bg-surface-container-highest transition-all shadow-inner">
+<button class="flex items-center justify-center text-secondary hover:text-primary active:scale-90 transition-transform">
+<span class="material-symbols-outlined">attachment</span>
+</button>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-[15px] font-medium placeholder:text-secondary/60 leading-tight py-1" placeholder="Direct the Council..." type="text"/>
+<button class="w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center active:scale-90 transition-transform shadow-md">
+<span class="material-symbols-outlined text-[20px] font-bold">arrow_upward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<nav class="flex justify-around items-center px-4 pt-1 pb-6 max-w-2xl mx-auto">
+<button class="flex flex-col items-center gap-1 group">
+<div class="px-5 py-1 rounded-full bg-primary-fixed text-on-primary-fixed mb-0.5">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1">chat_bubble</span>
+</div>
+<span class="text-[10px] font-label font-bold text-on-surface">Council</span>
+</button>
+<button class="flex flex-col items-center gap-1 group text-secondary hover:text-on-surface transition-colors">
+<div class="px-5 py-1 rounded-full group-active:bg-surface-container-high transition-colors mb-0.5">
+<span class="material-symbols-outlined text-[24px]">analytics</span>
+</div>
+<span class="text-[10px] font-label font-medium">Insights</span>
+</button>
+<button class="flex flex-col items-center gap-1 group text-secondary hover:text-on-surface transition-colors">
+<div class="px-5 py-1 rounded-full group-active:bg-surface-container-high transition-colors mb-0.5">
+<span class="material-symbols-outlined text-[24px]">history</span>
+</div>
+<span class="text-[10px] font-label font-medium">Archive</span>
+</button>
+<button class="flex flex-col items-center gap-1 group text-secondary hover:text-on-surface transition-colors">
+<div class="px-5 py-1 rounded-full group-active:bg-surface-container-high transition-colors mb-0.5">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+</div>
+<span class="text-[10px] font-label font-medium">Settings</span>
+</button>
+</nav>
+</div>
+</div>
+<!-- NavigationDrawer (Hidden by default) -->
+<aside class="fixed inset-y-0 left-0 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out bg-surface w-[280px] shadow-2xl flex flex-col py-8 border-r border-outline-variant/10">
+<div class="px-6 mb-8 flex flex-col items-start">
+<div class="w-16 h-16 rounded-full bg-surface-container-high mb-4 overflow-hidden border-2 border-primary-fixed shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Tech executive portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbze5cYbSe8qa9EipSW3iwrhbXbhV9NMGHoJUchJu-4WE9X3cxGC-eUBqMYPF6zre4B1JTreppU4GBLZR78-Rn9RJWSn95x34vnTvPfnfuibFMj4D6HyIItXPFbbemLsgZ__YM4bE18X8aPRzaGOyxQUIduuz-p2kuNfC5Zd_suvnXnDzVe6v5sAil8DH1ghy621mvKlzOytL4ZXeQBi0DMQWAmKh5RLVTOggj2_0lfHFdADouWVtoNHGgDFac7xRMyZz3JZlRRLA"/>
+</div>
+<h2 class="font-headline text-lg font-bold">Executive Protocol</h2>
+<p class="text-secondary text-xs font-medium font-body">Lead Coordinator</p>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<div class="bg-primary text-on-primary rounded-full px-4 py-3 flex items-center gap-4 shadow-sm">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body font-medium">Committee</span>
+</div>
+<div class="text-on-surface px-4 py-3 flex items-center gap-4 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined">history</span>
+<span class="font-body font-medium">Archives</span>
+</div>
+<div class="text-on-surface px-4 py-3 flex items-center gap-4 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-body font-medium">Protocol</span>
+</div>
+<div class="text-on-surface px-4 py-3 flex items-center gap-4 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body font-medium">Settings</span>
+</div>
+</nav>
+<div class="mt-auto px-6 pt-6 border-t border-outline-variant/15">
+<span class="text-[10px] font-label text-secondary tracking-widest uppercase">v1.0.4 Executive</span>
+</div>
+</aside>
+<!-- Overlay for Drawer (Hidden) -->
+<div class="fixed inset-0 bg-on-surface/20 backdrop-blur-sm z-40 hidden"></div>
+</body></html>

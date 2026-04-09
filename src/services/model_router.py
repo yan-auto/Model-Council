@@ -1,6 +1,6 @@
 """Model Router —— 模型路由
 
-根据配置和可用性选择适配器，支持按角色指定模型。
+从数据库读取供应商和模型配置，动态创建适配器。
 """
 
 from __future__ import annotations
@@ -8,70 +8,88 @@ from __future__ import annotations
 from src.adapters.base import LLMAdapter
 from src.adapters.openai_adapter import OpenAIAdapter
 from src.adapters.anthropic_adapter import AnthropicAdapter
-from src.config import get_settings
+from src.data.models import ProviderType
+
+# 适配器缓存（provider_id → adapter）
+_adapter_cache: dict[str, LLMAdapter] = {}
 
 
-# 适配器单例
-_openai_adapter: OpenAIAdapter | None = None
-_anthropic_adapter: AnthropicAdapter | None = None
+def _create_adapter(provider, api_key: str, base_url: str, model: str = "") -> LLMAdapter:
+    """根据供应商类型创建适配器"""
+    if provider.provider_type == ProviderType.ANTHROPIC:
+        return AnthropicAdapter(api_key=api_key, base_url=base_url, default_model=model)
+    # OpenAI 兼容（OpenAI、DeepSeek、MiniMax、自定义）
+    return OpenAIAdapter(api_key=api_key, base_url=base_url, default_model=model)
 
 
-def get_openai_adapter() -> OpenAIAdapter:
-    global _openai_adapter
-    if _openai_adapter is None:
-        settings = get_settings()
-        _openai_adapter = OpenAIAdapter(
-            api_key=settings.openai_api_key,
-            base_url=settings.openai_base_url,
-            default_model=settings.model_routing.openai.model,
-        )
-    return _openai_adapter
+async def get_adapter_for_agent(agent_name: str) -> tuple[LLMAdapter | None, dict | None]:
+    """获取角色对应的适配器 + 模型配置，返回 (adapter, model_config)"""
+    from src.data.repositories.agent_repo import get_agent_by_name
+    from src.data.repositories.model_repo import get_model
+    from src.data.repositories.provider_repo import get_provider
+
+    agent = await get_agent_by_name(agent_name)
+    if not agent:
+        return None, None
+
+    # 角色绑定了特定模型
+    if agent.model_id:
+        model = await get_model(agent.model_id)
+        if model:
+            provider = await get_provider(model.provider_id)
+            if provider and provider.api_key:
+                adapter = _get_or_create_adapter(provider, model.model_name)
+                if adapter:
+                    return adapter, {"model": model.model_name}
+
+    # 没绑定模型或绑定失败，用默认适配器
+    adapter = await get_default_adapter()
+    return adapter, None
 
 
-def get_anthropic_adapter() -> AnthropicAdapter:
-    global _anthropic_adapter
-    if _anthropic_adapter is None:
-        settings = get_settings()
-        _anthropic_adapter = AnthropicAdapter(
-            api_key=settings.anthropic_api_key,
-            default_model=settings.model_routing.anthropic.model,
-        )
-    return _anthropic_adapter
+async def get_default_adapter() -> LLMAdapter | None:
+    """返回第一个可用的适配器"""
+    from src.data.repositories.provider_repo import list_providers
+    from src.data.repositories.model_repo import list_models
 
-
-def get_adapter_for_provider(provider: str) -> LLMAdapter | None:
-    """根据 provider 名称返回对应适配器"""
-    if provider == "openai":
-        adapter = get_openai_adapter()
-        return adapter if adapter.is_available() else None
-    if provider == "anthropic":
-        adapter = get_anthropic_adapter()
-        return adapter if adapter.is_available() else None
-    if provider == "deepseek":
-        settings = get_settings()
-        if settings.deepseek_api_key:
-            return OpenAIAdapter(
-                api_key=settings.deepseek_api_key,
-                base_url=settings.deepseek_base_url,
-                default_model=settings.model_routing.deepseek.model,
-            )
-    return None
-
-
-def get_default_adapter() -> LLMAdapter | None:
-    """按配置优先级返回第一个可用的适配器"""
-    settings = get_settings()
-    routing = settings.model_routing
-    providers = ["openai", "anthropic", "deepseek"]
+    providers = await list_providers(status="active")
     for p in providers:
-        adapter = get_adapter_for_provider(p)
-        if adapter is not None and adapter.is_available():
+        if not p.api_key:
+            continue
+        models = await list_models(provider_id=p.id, status="active")
+        model_name = models[0].model_name if models else ""
+        adapter = _get_or_create_adapter(p, model_name)
+        if adapter and adapter.is_available():
             return adapter
     return None
 
 
+def _get_or_create_adapter(provider, model_name: str = "") -> LLMAdapter | None:
+    """获取或创建适配器（按 provider_id 缓存）"""
+    pid = provider.id
+    if pid in _adapter_cache:
+        return _adapter_cache[pid]
+    if not provider.api_key:
+        return None
+    adapter = _create_adapter(provider, provider.api_key, provider.base_url, model_name)
+    _adapter_cache[pid] = adapter
+    return adapter
+
+
+def clear_adapter_cache() -> None:
+    """清除适配器缓存（供应商配置更新时调用）"""
+    _adapter_cache.clear()
+
+
+def get_default_model_config() -> dict:
+    """默认模型参数"""
+    return {"temperature": 0.7, "max_tokens": 2048}
+
+
+# 向后兼容
 def get_provider_config(provider: str) -> dict:
-    """获取指定 provider 的模型配置"""
+    """兼容旧代码的 provider config"""
+    from src.config import get_settings
     settings = get_settings()
     routing = settings.model_routing
     cfg_map = {
@@ -79,7 +97,5 @@ def get_provider_config(provider: str) -> dict:
         "anthropic": routing.anthropic,
         "deepseek": routing.deepseek,
     }
-    cfg = cfg_map.get(provider)
-    if cfg is None:
-        cfg = routing.openai  # fallback
+    cfg = cfg_map.get(provider, routing.openai)
     return {"model": cfg.model, "temperature": cfg.temperature, "max_tokens": cfg.max_tokens}

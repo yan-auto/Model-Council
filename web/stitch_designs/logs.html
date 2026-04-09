@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Council - System Logs</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="/src/router.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-container": "#005bc4",
+                    "tertiary-fixed": "#ffdbcd",
+                    "surface-bright": "#f9f9f8",
+                    "surface-container": "#eeeeed",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "on-surface-variant": "#424753",
+                    "tertiary": "#7e2e00",
+                    "outline-variant": "#c2c6d5",
+                    "surface-container-high": "#e8e8e7",
+                    "surface-tint": "#005ac2",
+                    "on-primary-container": "#cbdaff",
+                    "secondary-fixed-dim": "#c1c8c7",
+                    "primary-fixed": "#d8e2ff",
+                    "surface-container-highest": "#e2e2e2",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed": "#360f00",
+                    "on-surface": "#1a1c1c",
+                    "surface-variant": "#e2e2e2",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed-dim": "#adc6ff",
+                    "outline": "#727784",
+                    "on-secondary-fixed-variant": "#414847",
+                    "on-primary-fixed-variant": "#004395",
+                    "on-secondary-fixed": "#161d1c",
+                    "inverse-surface": "#2f3130",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed": "#001a42",
+                    "on-primary": "#ffffff",
+                    "background": "#f9f9f8",
+                    "surface-container-low": "#f3f4f3",
+                    "secondary-container": "#dde4e2",
+                    "on-tertiary-container": "#ffd0bc",
+                    "on-tertiary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#a43f01",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#adc6ff",
+                    "surface-dim": "#dadad9",
+                    "error-container": "#ffdad6",
+                    "secondary": "#59605f",
+                    "secondary-fixed": "#dde4e2",
+                    "on-background": "#1a1c1c",
+                    "on-secondary-container": "#5f6665",
+                    "primary": "#004496",
+                    "surface": "#f9f9f8",
+                    "inverse-on-surface": "#f1f1f0",
+                    "on-tertiary-fixed-variant": "#7c2e00"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Manrope"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Manrope', sans-serif; background-color: #f9f9f8; }
+        .font-space { font-family: 'Space Grotesk', sans-serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="text-on-surface antialiased overflow-x-hidden">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-screen flex flex-col border-r-0 h-full w-[260px] transition-all duration-200 bg-[#f3f4f3] dark:bg-slate-900 z-50">
+<div class="px-6 py-8">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm" data-icon="token">token</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tighter text-[#2d3433] dark:text-white font-['Space_Grotesk']">Council</h1>
+<p class="font-inter text-[10px] uppercase tracking-widest text-secondary font-medium">The Executive Protocol</p>
+</div>
+</div>
+<a href="#/chat" class="w-full flex items-center justify-center gap-2 bg-primary py-3 px-4 text-white rounded-full font-bold mb-8 transition-all scale-98 active:opacity-80">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+<span class="font-inter text-sm">New Committee</span>
+</a>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-[#757c7b] dark:text-slate-400 hover:text-[#2d3433] dark:hover:text-white hover:bg-[#e8e8e7] dark:hover:bg-slate-800 transition-colors" href="#/chat">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+<span class="font-inter font-medium text-sm">Chat History</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#757c7b] dark:text-slate-400 hover:text-[#2d3433] dark:hover:text-white hover:bg-[#e8e8e7] dark:hover:bg-slate-800 transition-colors" href="#/roles">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-inter font-medium text-sm">Role Management</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#757c7b] dark:text-slate-400 hover:text-[#2d3433] dark:hover:text-white hover:bg-[#e8e8e7] dark:hover:bg-slate-800 transition-colors" href="#/providers">
+<span class="material-symbols-outlined" data-icon="business_center">business_center</span>
+<span class="font-inter font-medium text-sm">Suppliers</span>
+</a>
+<!-- Active Item: System Logs -->
+<a class="flex items-center gap-3 px-4 py-3 bg-[#e8e8e7] dark:bg-slate-800 text-[#005bc4] dark:text-blue-400 rounded-full font-bold" href="#/logs">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-inter text-sm">System Logs</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#757c7b] dark:text-slate-400 hover:text-[#2d3433] dark:hover:text-white hover:bg-[#e8e8e7] dark:hover:bg-slate-800 transition-colors" href="#/history">
+<span class="material-symbols-outlined" data-icon="archive">archive</span>
+<span class="font-inter font-medium text-sm">Archive</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-6 border-t border-outline-variant/10">
+<div class="flex items-center gap-3">
+<img alt="User profile avatar" class="w-10 h-10 rounded-full bg-secondary-container" data-alt="minimalist professional portrait of a tech executive avatar with neutral features and soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaLM9bXV7EYL6bm0fFUADzA6wirHu1p0l1d6nEY3C2dy3mw_36mPjvKd06h1QN5plqaADQopOQA8STqVTQELMJqufrvP4i8w35qowfV3Gn9N5t9fSFdWN1uErRtUXnq_QEwoYjyax5_7F5Duf58x3BAwngmNwGMSMcrm0jcVkE2n0E3ixeF3vWyghtFLzP4yG-ivV7EWVL2w2-wfVgASPEWsON_3xpZw6iiZ9Lcc9vWmZhL8ar84S95ZPXscxa8L0pGSlewemfeV4"/>
+<div class="overflow-hidden">
+<p class="font-bold text-sm truncate">Director 01</p>
+<p class="text-[10px] text-secondary font-inter uppercase tracking-tight">Executive Tier</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- TopNavBar Shell -->
+<header class="flex justify-between items-center w-full px-8 py-4 sticky top-0 z-40 ml-[260px] max-w-[calc(100%-260px)] bg-[#f9f9f8]/92 dark:bg-slate-950/92 backdrop-blur-md">
+<div class="flex items-center gap-12">
+<div class="flex gap-8">
+<a class="text-[#757c7b] dark:text-slate-400 hover:text-[#2d3433] pb-1 font-inter text-xs uppercase tracking-widest font-semibold hover:opacity-70 transition-opacity" href="#">Facilitator</a>
+<a class="text-[#757c7b] dark:text-slate-400 hover:text-[#2d3433] pb-1 font-inter text-xs uppercase tracking-widest font-semibold hover:opacity-70 transition-opacity" href="#">Perspective</a>
+<a class="text-[#757c7b] dark:text-slate-400 hover:text-[#2d3433] pb-1 font-inter text-xs uppercase tracking-widest font-semibold hover:opacity-70 transition-opacity" href="#">Tactician</a>
+<!-- Active Sub-Nav: Overseer -->
+<a class="text-[#005bc4] dark:text-blue-400 border-b-2 border-[#005bc4] pb-1 font-bold font-inter text-xs uppercase tracking-widest hover:opacity-70 transition-opacity" href="#">Overseer</a>
+<a class="text-[#757c7b] dark:text-slate-400 hover:text-[#2d3433] pb-1 font-inter text-xs uppercase tracking-widest font-semibold hover:opacity-70 transition-opacity" href="#">Mind Reader</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/10">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="font-inter text-[10px] font-bold text-secondary uppercase tracking-widest">Live Syncing</span>
+</div>
+<button class="material-symbols-outlined text-secondary cursor-pointer active:scale-95 transition-transform" data-icon="notifications">notifications</button>
+<a href="#/profile" class="material-symbols-outlined text-secondary cursor-pointer active:scale-95 transition-transform" data-icon="settings">settings</a>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[260px] p-8 max-w-[1400px]">
+<!-- Header Section -->
+<div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<span class="font-inter text-xs font-bold text-primary-container uppercase tracking-[0.2em] mb-2 block">Executive Audit</span>
+<h2 class="text-5xl font-headline font-bold text-on-surface tracking-tighter">System Logs</h2>
+<p class="text-secondary body-lg mt-3 max-w-2xl">A real-time comprehensive stream of operations, decision logic, and integration handshakes across the Council network.</p>
+</div>
+<div class="flex gap-3">
+<div class="bg-surface-container-lowest border border-outline-variant/15 p-1 rounded-full flex gap-1">
+<button class="px-6 py-2 rounded-full text-xs font-bold font-inter bg-primary text-white">ALL LOGS</button>
+<button class="px-6 py-2 rounded-full text-xs font-bold font-inter text-secondary hover:bg-surface-container-low transition-colors">CRITICAL</button>
+<button class="px-6 py-2 rounded-full text-xs font-bold font-inter text-secondary hover:bg-surface-container-low transition-colors">API ONLY</button>
+</div>
+<button class="bg-surface-container-highest w-10 h-10 rounded-full flex items-center justify-center hover:bg-outline-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface text-sm" data-icon="filter_list">filter_list</span>
+</button>
+</div>
+</div>
+<!-- Bento Table Container -->
+<div class="bg-surface-container-low rounded-lg p-1">
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden border border-outline-variant/10">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low">
+<tr>
+<th class="px-6 py-4 font-inter text-[11px] font-bold text-secondary uppercase tracking-widest border-b border-outline-variant/10">Timestamp</th>
+<th class="px-6 py-4 font-inter text-[11px] font-bold text-secondary uppercase tracking-widest border-b border-outline-variant/10">Role / Source</th>
+<th class="px-6 py-4 font-inter text-[11px] font-bold text-secondary uppercase tracking-widest border-b border-outline-variant/10">Event Type</th>
+<th class="px-6 py-4 font-inter text-[11px] font-bold text-secondary uppercase tracking-widest border-b border-outline-variant/10">Message / Snippet</th>
+<th class="px-6 py-4 font-inter text-[11px] font-bold text-secondary uppercase tracking-widest border-b border-outline-variant/10 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/5">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-high/30 transition-colors group">
+<td class="px-6 py-5 align-top">
+<span class="font-inter text-xs text-on-surface-variant font-medium">14:22:18.042</span>
+</td>
+<td class="px-6 py-5 align-top">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span class="font-body font-bold text-sm">Facilitator</span>
+</div>
+</td>
+<td class="px-6 py-5 align-top">
+<div class="bg-primary-fixed px-3 py-1 rounded-full w-fit">
+<span class="font-inter text-[10px] font-bold text-on-primary-fixed-variant uppercase">Reasoning</span>
+</div>
+</td>
+<td class="px-6 py-5 align-top">
+<p class="text-sm text-on-surface leading-relaxed max-w-xl">
+                                    Analyzing conflict between Tactician and Overseer regarding Q4 infrastructure scaling. Synthesizing middleware compatibility layer...
+                                </p>
+</td>
+<td class="px-6 py-5 align-top text-right">
+<button class="opacity-0 group-hover:opacity-100 transition-opacity material-symbols-outlined text-secondary hover:text-primary-container" data-icon="open_in_new">open_in_new</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-high/30 transition-colors group">
+<td class="px-6 py-5 align-top">
+<span class="font-inter text-xs text-on-surface-variant font-medium">14:21:05.991</span>
+</td>
+<td class="px-6 py-5 align-top">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-body font-bold text-sm">OpenAI GPT-4o</span>
+</div>
+</td>
+<td class="px-6 py-5 align-top">
+<div class="bg-secondary-container px-3 py-1 rounded-full w-fit">
+<span class="font-inter text-[10px] font-bold text-on-secondary-container uppercase">API Call</span>
+</div>
+</td>
+<td class="px-6 py-5 align-top">
+<code class="text-[12px] font-mono text-secondary-fixed-variant bg-surface-container px-2 py-1 rounded">POST /v1/chat/completions HTTP/1.1 (Tokens: 4,029)</code>
+</td>
+<td class="px-6 py-5 align-top text-right">
+<button class="opacity-0 group-hover:opacity-100 transition-opacity material-symbols-outlined text-secondary hover:text-primary-container" data-icon="open_in_new">open_in_new</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-high/30 transition-colors group">
+<td class="px-6 py-5 align-top">
+<span class="font-inter text-xs text-on-surface-variant font-medium">14:19:42.110</span>
+</td>
+<td class="px-6 py-5 align-top">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+<span class="font-body font-bold text-sm">System</span>
+</div>
+</td>
+<td class="px-6 py-5 align-top">
+<div class="bg-error-container px-3 py-1 rounded-full w-fit">
+<span class="font-inter text-[10px] font-bold text-error uppercase">Error</span>
+</div>
+</td>
+<td class="px-6 py-5 align-top">
+<p class="text-sm text-error font-bold leading-relaxed">
+                                    Vector DB Connection Timeout: Node_West_04 failed to acknowledge handshake within 500ms. Retrying connection...
+                                </p>
+</td>
+<td class="px-6 py-5 align-top text-right">
+<button class="opacity-0 group-hover:opacity-100 transition-opacity material-symbols-outlined text-secondary hover:text-primary-container" data-icon="open_in_new">open_in_new</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-high/30 transition-colors group">
+<td class="px-6 py-5 align-top">
+<span class="font-inter text-xs text-on-surface-variant font-medium">14:18:22.501</span>
+</td>
+<td class="px-6 py-5 align-top">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+<span class="font-body font-bold text-sm">Overseer</span>
+</div>
+</td>
+<td class="px-6 py-5 align-top">
+<div class="bg-tertiary-fixed px-3 py-1 rounded-full w-fit">
+<span class="font-inter text-[10px] font-bold text-tertiary uppercase">Success</span>
+</div>
+</td>
+<td class="px-6 py-5 align-top">
+<p class="text-sm text-on-surface leading-relaxed">
+                                    Security protocol v4.2 applied successfully to "Project Sentinel". All active participants verified.
+                                </p>
+</td>
+<td class="px-6 py-5 align-top text-right">
+<button class="opacity-0 group-hover:opacity-100 transition-opacity material-symbols-outlined text-secondary hover:text-primary-container" data-icon="open_in_new">open_in_new</button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-surface-container-high/30 transition-colors group">
+<td class="px-6 py-5 align-top">
+<span class="font-inter text-xs text-on-surface-variant font-medium">14:15:00.002</span>
+</td>
+<td class="px-6 py-5 align-top">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="font-body font-bold text-sm">Perspective</span>
+</div>
+</td>
+<td class="px-6 py-5 align-top">
+<div class="bg-primary-fixed px-3 py-1 rounded-full w-fit">
+<span class="font-inter text-[10px] font-bold text-on-primary-fixed-variant uppercase">Reasoning</span>
+</div>
+</td>
+<td class="px-6 py-5 align-top">
+<p class="text-sm text-on-surface leading-relaxed max-w-xl">
+                                    Evaluating market sentiment vectors from social ingest. Detected anomalous 15% spike in bearish sentiment for Semiconductor sector.
+                                </p>
+</td>
+<td class="px-6 py-5 align-top text-right">
+<button class="opacity-0 group-hover:opacity-100 transition-opacity material-symbols-outlined text-secondary hover:text-primary-container" data-icon="open_in_new">open_in_new</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer / Pagination -->
+<div class="px-8 py-6 flex items-center justify-between">
+<p class="font-inter text-[10px] text-secondary font-bold uppercase tracking-widest">Showing 25 of 1,249 entries</p>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-full flex items-center justify-center border border-outline-variant/10 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-on-surface text-sm" data-icon="chevron_left">chevron_left</span>
+</button>
+<div class="flex items-center bg-surface-container-highest rounded-full px-4 gap-4">
+<span class="font-inter text-xs font-bold text-primary">1</span>
+<span class="font-inter text-xs font-bold text-secondary">2</span>
+<span class="font-inter text-xs font-bold text-secondary">3</span>
+<span class="font-inter text-xs font-bold text-secondary">...</span>
+<span class="font-inter text-xs font-bold text-secondary">42</span>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center border border-outline-variant/10 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-on-surface text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- System Health Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+<div class="bg-surface-container-low rounded-lg p-6">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary-container" data-icon="speed">speed</span>
+<span class="font-inter text-[10px] font-bold text-secondary uppercase tracking-tighter">Avg Response</span>
+</div>
+<h4 class="text-3xl font-headline font-bold text-on-surface tracking-tight">412ms</h4>
+<div class="mt-4 w-full h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-primary-container h-full w-3/4"></div>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-lg p-6">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary-container" data-icon="account_tree">account_tree</span>
+<span class="font-inter text-[10px] font-bold text-secondary uppercase tracking-tighter">API Uptime</span>
+</div>
+<h4 class="text-3xl font-headline font-bold text-on-surface tracking-tight">99.98%</h4>
+<div class="mt-4 w-full h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-emerald-500 h-full w-[99%]"></div>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-lg p-6">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary-container" data-icon="database">database</span>
+<span class="font-inter text-[10px] font-bold text-secondary uppercase tracking-tighter">Total Events</span>
+</div>
+<h4 class="text-3xl font-headline font-bold text-on-surface tracking-tight">2.4M</h4>
+<div class="mt-4 flex items-center gap-2">
+<span class="font-inter text-[10px] text-emerald-600 font-bold">+12% from last hour</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual "Committee" Chips - Overlay indicator -->
+<div class="fixed bottom-8 right-8 z-50 flex flex-col items-end gap-3 pointer-events-none">
+<div class="bg-white/80 backdrop-blur-xl border border-outline-variant/20 px-4 py-2 rounded-full shadow-lg flex items-center gap-3 pointer-events-auto cursor-help">
+<span class="material-symbols-outlined text-xs text-primary-container" data-icon="security" data-weight="fill" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="font-inter text-[10px] font-bold text-on-surface uppercase tracking-widest">Protocol Active</span>
+</div>
+</div>
+
+<script type="module">
+// Logout via sessionStorage - no backend needed
+document.querySelectorAll('a[href="#/login"]').forEach(el => {
+  el.addEventListener('click', (e) => {
+    e.preventDefault();
+    sessionStorage.removeItem('council_logged_in');
+    window.location.href = '/login';
+  });
+});
+</script>
+</body></html>

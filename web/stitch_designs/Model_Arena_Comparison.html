@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Council Obsidian - Model Arena</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Manrope:wght@200..800&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-variant": "#e2e2e2",
+                      "on-error": "#ffffff",
+                      "surface-bright": "#f9f9f8",
+                      "on-primary-fixed": "#001a42",
+                      "on-secondary-fixed": "#161d1c",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-container": "#5f6665",
+                      "secondary-fixed": "#dde4e2",
+                      "primary-container": "#005bc4",
+                      "on-background": "#1a1c1c",
+                      "inverse-on-surface": "#f1f1f0",
+                      "surface-container-highest": "#e2e2e2",
+                      "on-surface": "#1a1c1c",
+                      "primary-fixed": "#d8e2ff",
+                      "tertiary-fixed": "#ffdbcd",
+                      "on-tertiary-fixed": "#360f00",
+                      "inverse-surface": "#2f3130",
+                      "tertiary-container": "#a43f01",
+                      "on-tertiary-container": "#ffd0bc",
+                      "error-container": "#ffdad6",
+                      "outline": "#727784",
+                      "on-secondary-fixed-variant": "#414847",
+                      "on-error-container": "#93000a",
+                      "on-primary": "#ffffff",
+                      "secondary-fixed-dim": "#c1c8c7",
+                      "secondary-container": "#dde4e2",
+                      "surface-dim": "#dadad9",
+                      "tertiary-fixed-dim": "#ffb596",
+                      "surface-tint": "#005ac2",
+                      "on-tertiary": "#ffffff",
+                      "surface": "#f9f9f8",
+                      "on-tertiary-fixed-variant": "#7c2e00",
+                      "on-secondary": "#ffffff",
+                      "on-surface-variant": "#424753",
+                      "primary": "#004496",
+                      "on-primary-fixed-variant": "#004395",
+                      "error": "#ba1a1a",
+                      "primary-fixed-dim": "#adc6ff",
+                      "outline-variant": "#c2c6d5",
+                      "surface-container-high": "#e8e8e7",
+                      "tertiary": "#7e2e00",
+                      "secondary": "#59605f",
+                      "on-primary-container": "#cbdaff",
+                      "background": "#f9f9f8",
+                      "surface-container": "#eeeeed",
+                      "surface-container-low": "#f3f4f3",
+                      "inverse-primary": "#adc6ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Space Grotesk"],
+                      "body": ["Manrope"],
+                      "label": ["Inter"]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(16px);
+        }
+        .custom-shadow {
+            box-shadow: 0 20px 40px rgba(45, 52, 51, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface overflow-hidden flex h-screen">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 left-0 sticky flex flex-col p-4 gap-2 bg-surface-container-low transition-all duration-200">
+<!-- Sidebar Header -->
+<div class="px-4 py-6 mb-4">
+<h1 class="font-headline font-bold text-primary-container text-lg leading-tight tracking-tight">The Executive Protocol</h1>
+<p class="text-[10px] font-label tracking-widest text-secondary uppercase mt-1">v4.2 Stable</p>
+</div>
+<button class="mb-6 mx-2 py-3 px-6 bg-primary text-on-primary rounded-full font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-all scale-95 active:opacity-80">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>New Protocol</span>
+</button>
+<nav class="flex flex-col gap-1 flex-1">
+<div class="flex items-center gap-3 px-4 py-3 text-secondary transition-all hover:bg-surface-container-high rounded-full group">
+<span class="material-symbols-outlined group-hover:text-primary">psychology</span>
+<span class="font-label text-sm">Intelligence</span>
+</div>
+<!-- Active State: Comparison -->
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface font-semibold bg-surface-container-high rounded-full">
+<span class="material-symbols-outlined">compare_arrows</span>
+<span class="font-label text-sm">Comparison</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-secondary transition-all hover:bg-surface-container-high rounded-full group">
+<span class="material-symbols-outlined group-hover:text-primary">terminal</span>
+<span class="font-label text-sm">Directives</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-secondary transition-all hover:bg-surface-container-high rounded-full group">
+<span class="material-symbols-outlined group-hover:text-primary">book_5</span>
+<span class="font-label text-sm">Library</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-secondary transition-all hover:bg-surface-container-high rounded-full group">
+<span class="material-symbols-outlined group-hover:text-primary">shield_lock</span>
+<span class="font-label text-sm">Security</span>
+</div>
+<!-- Skeleton Loading State for History -->
+<div class="mt-8 px-4">
+<p class="text-[10px] font-label tracking-widest text-secondary uppercase mb-4">Recent Archives</p>
+<div class="space-y-4">
+<div class="flex items-center gap-3 opacity-40">
+<div class="w-8 h-8 rounded-full bg-surface-variant animate-pulse"></div>
+<div class="h-2 w-24 bg-surface-variant rounded animate-pulse"></div>
+</div>
+<div class="flex items-center gap-3 opacity-30">
+<div class="w-8 h-8 rounded-full bg-surface-variant animate-pulse"></div>
+<div class="h-2 w-32 bg-surface-variant rounded animate-pulse"></div>
+</div>
+<div class="flex items-center gap-3 opacity-20">
+<div class="w-8 h-8 rounded-full bg-surface-variant animate-pulse"></div>
+<div class="h-2 w-20 bg-surface-variant rounded animate-pulse"></div>
+</div>
+</div>
+</div>
+</nav>
+<div class="mt-auto pt-4 flex flex-col gap-1">
+<div class="flex items-center gap-3 px-4 py-3 text-secondary hover:bg-surface-container-high rounded-full">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="font-label text-sm">Help</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-secondary hover:bg-surface-container-high rounded-full">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label text-sm">Logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="flex-1 flex flex-col overflow-hidden">
+<!-- TopNavBar -->
+<header class="w-full top-0 sticky flex justify-between items-center px-8 h-16 max-w-full bg-surface transition-colors z-20">
+<div class="flex items-center gap-8">
+<span class="text-xl font-headline font-bold tracking-tighter text-on-surface">Council Obsidian</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-secondary font-label text-sm hover:text-primary transition-colors" href="#">Models</a>
+<a class="text-primary-container dark:text-primary-fixed font-bold border-b-2 border-primary-container font-label text-sm" href="#">Workspaces</a>
+<a class="text-secondary font-label text-sm hover:text-primary transition-colors" href="#">Archives</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative flex items-center bg-surface-container px-4 py-1.5 rounded-full w-64">
+<span class="material-symbols-outlined text-secondary text-sm">search</span>
+<input class="bg-transparent border-none text-xs focus:ring-0 placeholder:text-secondary-variant w-full" placeholder="Protocol query..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<button class="text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/10">
+<img class="w-full h-full object-cover" data-alt="Portrait of a sophisticated executive professional in a minimalist grey studio background, soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEzpimxLcS8BGfY033c-9AlpCbcXNYOGGvAt_LATn1n4gSNs89wN8DH-TmWQAVFege3WyNwHocGhk-OozxNPNwWntShSBbR-sMSFLCMmtiOlnZ-9HhYq0y4wSLsgXANJ-y4wrF2hSMBri8-jYy90BMQkRvf_e9R42hk_-75NaOOZ6N4Hk3mlwCGegpuYVpyUyDvWe1vxTcY2qYy3UWHcmUmNU7BjdOigsEpiziafsYNB82QaD_ZXTgVIzDe8QO4Lj-_pzlFSEf0Uw"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Canvas Area -->
+<section class="flex-1 overflow-y-auto p-8 relative">
+<!-- Toast Notification -->
+<div class="absolute top-4 right-8 z-30 flex items-center gap-3 bg-surface-container-highest px-6 py-3 rounded-full custom-shadow border border-outline-variant/10">
+<div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+<span class="font-label text-xs font-semibold tracking-wide">SYSTEM READY</span>
+</div>
+<div class="max-w-7xl mx-auto space-y-8">
+<!-- Header Segment -->
+<div class="flex justify-between items-end">
+<div>
+<h2 class="font-headline text-3xl font-bold tracking-tight text-on-surface">Model Arena</h2>
+<p class="text-secondary mt-1 font-body">Synthetic synthesis and divergent strategy evaluation.</p>
+</div>
+<div class="flex gap-2">
+<span class="px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold tracking-widest uppercase">Arena Protocol Alpha</span>
+</div>
+</div>
+<!-- Comparison Grid -->
+<div class="grid grid-cols-2 gap-8">
+<!-- Role A: The Tactician -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-4">
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed rounded-full font-label text-[10px] font-bold tracking-wider">TACTICIAN</span>
+<span class="text-secondary text-[10px] font-label uppercase tracking-widest">Execution Path A</span>
+</div>
+<span class="material-symbols-outlined text-secondary text-sm">analytics</span>
+</div>
+<div class="bg-surface-container-low rounded-lg p-8 custom-shadow min-h-[400px] border border-transparent hover:border-outline-variant/20 transition-all">
+<h3 class="font-headline text-xl font-bold mb-6">Strategic Market Ingress</h3>
+<div class="space-y-4 text-secondary leading-relaxed font-body">
+<p>Operational priority must be given to <span class="text-primary font-semibold">Aggressive Scaling</span> within the Tier 2 cloud providers. The statistical advantage of early lock-in outweighs the risk of margin compression in the first 18 months.</p>
+<ul class="space-y-3 list-none">
+<li class="flex gap-3">
+<span class="text-primary-container">•</span>
+<span>Establish decentralized nodes in EMEA regions to minimize latency overhead.</span>
+</li>
+<li class="flex gap-3">
+<span class="text-primary-container">•</span>
+<span>Deploy direct-to-enterprise licensing models with immediate 40% discount cycles.</span>
+</li>
+</ul>
+<p class="mt-4 italic">Recommendation: Proceed with Directive 04 immediately.</p>
+</div>
+</div>
+</div>
+<!-- Role B: The Perspective -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-4">
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed-variant rounded-full font-label text-[10px] font-bold tracking-wider">PERSPECTIVE</span>
+<span class="text-secondary text-[10px] font-label uppercase tracking-widest">Ethical &amp; Long-term B</span>
+</div>
+<span class="material-symbols-outlined text-secondary text-sm">visibility</span>
+</div>
+<div class="bg-surface-container-low rounded-lg p-8 custom-shadow min-h-[400px] border border-transparent hover:border-outline-variant/20 transition-all">
+<h3 class="font-headline text-xl font-bold mb-6">Human-Centric Durability</h3>
+<div class="space-y-4 text-secondary leading-relaxed font-body">
+<p>The proposed scaling speed risks significant <span class="text-tertiary font-semibold">Organizational Fragility</span>. Rapid ingress without cultural alignment in EMEA will lead to talent attrition and compliance drift.</p>
+<ul class="space-y-3 list-none">
+<li class="flex gap-3">
+<span class="text-tertiary">•</span>
+<span>Adopt a "Staged Resonance" approach: focus on 2 pilot cities before regional saturation.</span>
+</li>
+<li class="flex gap-3">
+<span class="text-tertiary">•</span>
+<span>Implement transparent value-based pricing instead of aggressive discounting to preserve brand equity.</span>
+</li>
+</ul>
+<p class="mt-4 italic">Recommendation: Delay Directive 04 for a 30-day internal audit.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Consensus Summary Box -->
+<div class="bg-surface-container-high rounded-lg p-1 w-full mt-12 mb-24 custom-shadow">
+<div class="bg-surface-container-lowest rounded-DEFAULT p-8">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">hub</span>
+</div>
+<div>
+<h4 class="font-headline font-bold text-lg">Consensus Synthesis</h4>
+<p class="text-[10px] text-secondary font-label tracking-widest uppercase">Cross-model Alignment Logic</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+<div class="border-l-2 border-primary-container pl-6 py-2">
+<p class="font-bold text-on-surface mb-2">Convergent Point</p>
+<p class="text-secondary">Both roles agree that EMEA represents the highest growth potential for the Obsidian core engine.</p>
+</div>
+<div class="border-l-2 border-outline-variant pl-6 py-2">
+<p class="font-bold text-on-surface mb-2">Divergent Risk</p>
+<p class="text-secondary">The primary friction point is "Speed of Entry" vs "Cultural Stability."</p>
+</div>
+<div class="border-l-2 border-primary pl-6 py-2">
+<p class="font-bold text-on-surface mb-2">Executive Path</p>
+<p class="text-secondary">Authorize pilot nodes in London and Berlin immediately, while deferring the general discount cycle.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Glassmorphic Input (The AI Hub) -->
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 w-full max-w-3xl px-4 z-40">
+<div class="glass-panel p-2 rounded-full border border-outline-variant/20 custom-shadow flex items-center gap-3">
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-secondary hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined">attach_file</span>
+</button>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-on-surface font-body text-sm py-3 px-2" placeholder="Challenge the consensus or add context..." type="text"/>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-secondary hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined">mic</span>
+</button>
+<button class="h-10 px-6 rounded-full bg-primary text-on-primary font-bold text-xs tracking-wide hover:bg-primary-container transition-all flex items-center gap-2">
+<span>EVOLVE</span>
+<span class="material-symbols-outlined text-sm">auto_awesome</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

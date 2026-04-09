@@ -9,16 +9,16 @@ from src.core.agent_loader import load_agent, load_all_agents, list_agent_infos,
 
 
 class TestAgentLoader:
-    def test_load_promoter(self):
-        """加载内置角色：推进者"""
-        agent = load_agent("promoter")
-        assert agent.name == "promoter"
+    def test_load_strategist(self):
+        """加载内置角色：军师"""
+        agent = load_agent("strategist")
+        assert agent.name == "strategist"
         assert agent.description != ""
         assert agent.system_prompt != ""
         assert len(agent.personality.traits) > 0
 
     def test_load_perspectivist(self):
-        """加载内置角色：透视者"""
+        """加载内置角色：透视"""
         agent = load_agent("perspectivist")
         assert agent.name == "perspectivist"
         assert "分析" in agent.personality.traits
@@ -32,8 +32,10 @@ class TestAgentLoader:
         """加载所有角色"""
         agents = load_all_agents()
         names = [a.name for a in agents]
-        assert "promoter" in names
+        assert "strategist" in names
         assert "perspectivist" in names
+        assert "supervisor" in names
+        assert "social_coach" in names
 
     def test_list_agent_infos(self):
         """角色摘要列表"""

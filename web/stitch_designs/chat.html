@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Council | Executive Protocol</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="/src/router.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Manrope:wght@200;300;400;500;600;700;800&amp;family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary": "#005bc4",
+                      "background": "#f9f9f8",
+                      "surface": "#e4e9e8",
+                      "on-surface": "#1a1c1c",
+                      "outline": "#727784",
+                      "outline-variant": "#c2c6d5",
+                      "primary-container": "#005bc4",
+                      "on-primary-container": "#ffffff",
+                      "surface-container": "#eeeeed",
+                      "surface-container-high": "#e8e8e7",
+                      "surface-container-low": "#f3f4f3",
+                      "error": "#ba1a1a",
+                      "error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Space Grotesk"],
+                      "body": ["Manrope"],
+                      "label": ["Inter"]
+              },
+              "animation": {
+                "subtle-pulse": "subtle-pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+              },
+              "keyframes": {
+                "subtle-pulse": {
+                  "0%, 100%": { opacity: 1 },
+                  "50%": { opacity: 0.7 },
+                }
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(16px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn { animation: fadeIn 0.25s ease-out; }
+        
+        .sidebar-expanded { width: 260px; }
+        .sidebar-collapsed { width: 80px; }
+        .sidebar-item-text { transition: opacity 0.2s ease, width 0.2s ease; }
+        .collapsed .sidebar-item-text { opacity: 0; width: 0; pointer-events: none; visibility: hidden; }
+        .collapsed .sidebar-logo-text { display: none; }
+        .collapsed .sidebar-padding { padding-left: 1rem; padding-right: 1rem; }
+        .collapsed .sidebar-header { justify-content: center; }
+        .collapsed .nav-item { justify-content: center; padding-left: 0; padding-right: 0; }
+        .collapsed .user-profile { justify-content: center; padding: 0.75rem; }
+        .collapsed .user-details { display: none; }
+        .collapsed .recent-header { display: none; }
+    </style>
+</head>
+<body class="bg-background text-on-surface overflow-hidden">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="sidebar-expanded h-full bg-[#f3f4f3] flex flex-col transition-all duration-300 ease-in-out z-50 relative shrink-0" id="sidebar">
+<div class="p-6 sidebar-padding">
+<div class="flex items-center gap-3 mb-8 sidebar-header">
+<div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<div class="sidebar-logo-text">
+<h1 class="font-headline font-black tracking-tight text-xl text-primary whitespace-nowrap">The Council</h1>
+<p class="text-[10px] uppercase tracking-widest text-outline font-bold">Executive Protocol</p>
+</div>
+</div>
+<!-- New Chat Button -->
+<button id="new-chat-btn" class="w-full bg-primary text-white rounded-full py-3.5 flex items-center justify-center gap-2 font-bold font-headline transition-all active:scale-95 hover:brightness-110 shadow-lg shadow-primary/20 mb-8 overflow-hidden">
+<span class="material-symbols-outlined shrink-0">add</span>
+<span class="sidebar-item-text whitespace-nowrap">New Chat</span>
+</button>
+<nav id="conv-list" class="space-y-1 overflow-y-auto no-scrollbar max-h-[calc(100vh-320px)]">
+<p class="recent-header text-[10px] font-bold text-outline px-4 mb-4 uppercase tracking-widest">Recent Sessions</p>
+<a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-primary font-bold border-r-4 border-primary bg-white/50 transition-all hover:bg-white/80" href="#">
+<span class="material-symbols-outlined shrink-0">forum</span>
+<span class="sidebar-item-text truncate font-label text-sm">Strategy Planning</span>
+</a>
+<a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-[#757c7b] hover:bg-white/30 transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined shrink-0">memory</span>
+<span class="sidebar-item-text truncate font-label text-sm">Local AI Setup</span>
+</a>
+<a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-[#757c7b] hover:bg-white/30 transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined shrink-0">history</span>
+<span class="sidebar-item-text truncate font-label text-sm">History</span>
+</a>
+<a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-[#757c7b] hover:bg-white/30 transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined shrink-0">inventory_2</span>
+<span class="sidebar-item-text truncate font-label text-sm">Archives</span>
+</a>
+</nav>
+</div>
+<!-- Sidebar Toggle -->
+<button class="absolute -right-3 top-20 w-6 h-6 bg-white border border-outline-variant rounded-full flex items-center justify-center shadow-md z-[60] hover:bg-primary hover:text-white transition-all active:scale-90" onclick="toggleSidebar()">
+<span class="material-symbols-outlined text-xs" id="toggle-icon">chevron_left</span>
+</button>
+<div class="mt-auto p-4 sidebar-padding space-y-2">
+<button id="settings-btn" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[#757c7b] hover:bg-white/50 transition-all font-label text-sm active:scale-[0.98]">
+<span class="material-symbols-outlined shrink-0">settings</span>
+<span class="sidebar-item-text">Settings</span>
+</button>
+<button id="logout-btn" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[#757c7b] hover:bg-white/50 transition-all font-label text-sm active:scale-[0.98]">
+<span class="material-symbols-outlined shrink-0">logout</span>
+<span class="sidebar-item-text">Logout</span>
+</button>
+<div class="user-profile p-4 bg-white/40 rounded-2xl flex items-center gap-3 cursor-pointer hover:bg-white/60 transition-colors">
+<img alt="User" class="w-8 h-8 rounded-full bg-surface shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbF0UQcYqIXP6UJ0Z7etWRkvhl0-Qfg_UpajQQzO5uCGVaiS-gwUxhe9PtTsehr6PUxvt87OrP4tP41f_m8UBv5oXUo8w2rjgW1qhBBkFCjH2MJHuellDJ8-Dp85YjUmTg4o9EK1ycKPrBhv62RlHQreFp7IKgipWC2bjbjPL70ea7eGy389msN-P6rkgGwZhHZnMxBRIoXiinYKPytNm_h_4_IrSP1r1N3Cgc_zBrVOA7L5kHn74FVZ8NQGJwg6SCVP9CgQ9RupE"/>
+<div class="user-details flex-1 min-w-0">
+<p class="text-xs font-bold truncate">Profile</p>
+<p class="text-[10px] text-outline">Executive Tier</p>
+</div>
+<span class="material-symbols-outlined text-outline text-sm sidebar-item-text">unfold_more</span>
+</div>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="flex-1 flex flex-col relative bg-background overflow-hidden">
+<!-- Top Bar (Council Row) -->
+<header class="w-full z-40 bg-background/80 backdrop-blur-md flex justify-between items-center h-16 px-6 shrink-0 border-b border-surface">
+<div id="agent-pills" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-2">
+<button class="bg-primary text-white rounded-full px-4 py-1.5 flex items-center gap-2 font-headline text-xs font-medium whitespace-nowrap shadow-sm hover:brightness-110 transition-all active:scale-95">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">stars</span>
+                    Facilitator
+                </button>
+<button class="bg-surface text-[#757c7b] rounded-full px-4 py-1.5 flex items-center gap-2 font-headline text-xs font-medium whitespace-nowrap hover:bg-outline-variant/30 transition-all active:scale-95">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+                    Perspective
+                </button>
+<button class="bg-surface text-[#757c7b] rounded-full px-4 py-1.5 flex items-center gap-2 font-headline text-xs font-medium whitespace-nowrap hover:bg-outline-variant/30 transition-all active:scale-95">
+<span class="material-symbols-outlined text-[16px]">architecture</span>
+                    Tactician
+                </button>
+<button class="bg-surface text-[#757c7b] rounded-full px-4 py-1.5 flex items-center gap-2 font-headline text-xs font-medium whitespace-nowrap hover:bg-outline-variant/30 transition-all active:scale-95">
+<span class="material-symbols-outlined text-[16px]">policy</span>
+                    Overseer
+                </button>
+<button class="bg-surface text-[#757c7b] rounded-full px-4 py-1.5 flex items-center gap-2 font-headline text-xs font-medium whitespace-nowrap hover:bg-outline-variant/30 transition-all active:scale-95">
+<span class="material-symbols-outlined text-[16px]">psychology</span>
+                    Mind Reader
+                </button>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-outline hover:text-primary transition-colors active:scale-90">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 text-outline hover:text-primary transition-colors active:scale-90">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<!-- Bystander Notification Row -->
+<div class="w-full h-8 flex items-center justify-center px-6 overflow-hidden bg-surface/30">
+<div class="flex items-center gap-2 animate-subtle-pulse">
+<span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+<p class="text-[10px] font-label font-medium text-primary uppercase tracking-[0.2em]">Perspective is watching the flow...</p>
+</div>
+</div>
+<!-- Chat Canvas -->
+<div id="chat-canvas" class="flex-1 overflow-y-auto px-6 pb-48 no-scrollbar flex flex-col">
+<!-- Empty State Template (cloned by JS) -->
+<template id="empty-state-template">
+<div class="my-auto flex flex-col items-center justify-center max-w-2xl mx-auto py-12">
+<div class="mb-8 p-8 bg-surface rounded-[3rem] shadow-sm">
+<span class="material-symbols-outlined text-7xl text-primary" style="font-variation-settings: 'FILL' 1;">cognition</span>
+</div>
+<h2 class="font-headline font-bold text-4xl text-on-surface mb-4 text-center tracking-tight">The Council is Ready</h2>
+<p class="font-body text-outline text-center mb-10 max-w-md leading-relaxed">Your executive AI committee is synchronized and awaiting instructions. Select a perspective or start a broad inquiry.</p>
+<div class="flex flex-wrap justify-center gap-3">
+<button class="px-5 py-2.5 bg-surface hover:bg-outline-variant/30 transition-all active:scale-95 rounded-full text-sm font-label font-medium flex items-center gap-2 text-on-surface" onclick="document.getElementById('chat-input').value='帮我分析一下当前的风险';document.getElementById('chat-input').focus();">
+<span class="material-symbols-outlined text-sm text-primary">priority_high</span>Help me prioritize
+</button>
+<button class="px-5 py-2.5 bg-surface hover:bg-outline-variant/30 transition-all active:scale-95 rounded-full text-sm font-label font-medium flex items-center gap-2 text-on-surface" onclick="document.getElementById('chat-input').value='分析一下风险';document.getElementById('chat-input').focus();">
+<span class="material-symbols-outlined text-sm text-primary">analytics</span>Analyze the risks
+</button>
+<button class="px-5 py-2.5 bg-surface hover:bg-outline-variant/30 transition-all active:scale-95 rounded-full text-sm font-label font-medium flex items-center gap-2 text-on-surface" onclick="document.getElementById('chat-input').value='/discuss';document.getElementById('chat-input').focus();">
+<span class="material-symbols-outlined text-sm text-primary">forum</span>Start a discussion
+</button>
+</div>
+</div>
+</template>
+<!-- Empty State -->
+<div class="my-auto flex flex-col items-center justify-center max-w-2xl mx-auto py-12">
+<div class="mb-8 p-8 bg-surface rounded-[3rem] shadow-sm">
+<span class="material-symbols-outlined text-7xl text-primary" style="font-variation-settings: 'FILL' 1;">cognition</span>
+</div>
+<h2 class="font-headline font-bold text-4xl text-on-surface mb-4 text-center tracking-tight">The Council is Ready</h2>
+<p class="font-body text-outline text-center mb-10 max-w-md leading-relaxed">Your executive AI committee is synchronized and awaiting instructions. Select a perspective or start a broad inquiry.</p>
+<div class="flex flex-wrap justify-center gap-3">
+<button class="px-5 py-2.5 bg-surface hover:bg-outline-variant/30 transition-all active:scale-95 rounded-full text-sm font-label font-medium flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-sm text-primary">priority_high</span>
+                        Help me prioritize
+                    </button>
+<button class="px-5 py-2.5 bg-surface hover:bg-outline-variant/30 transition-all active:scale-95 rounded-full text-sm font-label font-medium flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-sm text-primary">analytics</span>
+                        Analyze the risks
+                    </button>
+<button class="px-5 py-2.5 bg-surface hover:bg-outline-variant/30 transition-all active:scale-95 rounded-full text-sm font-label font-medium flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-sm text-primary">forum</span>
+                        Start a discussion
+                    </button>
+</div>
+</div>
+</div>
+<!-- Input Area Shell -->
+<div class="absolute bottom-0 left-0 right-0 p-6 z-40 flex justify-center pointer-events-none">
+<div class="max-w-4xl w-full relative pointer-events-auto">
+<!-- Floating Todo Card -->
+<div class="absolute -top-16 left-0 right-0 flex justify-center">
+<div class="bg-white/95 border border-outline-variant/20 shadow-xl rounded-2xl px-5 py-3 flex items-center gap-4 transform transition-all hover:-translate-y-1">
+<div class="w-8 h-8 rounded-full bg-error-container flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[18px]">priority_high</span>
+</div>
+<div>
+<p class="text-[11px] font-black text-outline uppercase tracking-widest leading-none mb-1">Active Objective</p>
+<p class="text-xs font-bold text-on-surface">Task: Review API keys</p>
+</div>
+<button class="ml-4 p-1 hover:bg-surface rounded-md transition-colors">
+<span class="material-symbols-outlined text-sm">close</span>
+</button>
+</div>
+</div>
+<!-- Main Glass Input -->
+<div class="glass-panel border border-white/40 shadow-[0_20px_40px_rgba(45,52,51,0.06)] rounded-[2.5rem] p-3 flex flex-col gap-2">
+<div class="flex items-center gap-3 px-2">
+<button class="p-2 text-outline hover:text-primary transition-colors active:scale-90">
+<span class="material-symbols-outlined">attach_file</span>
+</button>
+<input id="chat-input" class="flex-1 bg-transparent border-none focus:ring-0 text-sm font-medium font-body placeholder:text-outline py-3 px-4" placeholder="Direct the Council..." type="text"/>
+<button id="send-btn" class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center shadow-lg shadow-primary/20 hover:brightness-110 active:scale-90 transition-all">
+<span class="material-symbols-outlined">arrow_upward</span>
+</button>
+</div>
+<!-- Bottom Toolbar -->
+<div class="flex items-center justify-between px-4 pb-1 border-t border-surface pt-2">
+<div class="flex items-center gap-4">
+<button class="text-[10px] font-bold font-label text-outline hover:text-primary flex items-center gap-1.5 uppercase tracking-tighter transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[14px]">tune</span>
+                                Parameters
+                            </button>
+<button class="text-[10px] font-bold font-label text-outline hover:text-primary flex items-center gap-1.5 uppercase tracking-tighter transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[14px]">history_edu</span>
+                                Context
+                            </button>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+<span class="text-[10px] font-black font-label text-outline uppercase tracking-widest">Protocol Active</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Discussion Mode Floating Action -->
+<div class="fixed bottom-28 left-[calc(sidebar-width+20px)] transition-all duration-300 z-50 md:block hidden" id="discuss-button-container" style="left: 280px;">
+<button id="discuss-btn" class="flex items-center gap-3 bg-on-surface text-background px-5 py-3 rounded-full shadow-2xl hover:brightness-125 transition-all group active:scale-95">
+<span class="material-symbols-outlined group-hover:rotate-12 transition-transform">forum</span>
+<span class="font-headline font-bold text-sm tracking-tight">/discuss Discussion Mode</span>
+</button>
+</div>
+</main>
+</div>
+<script type="module">
+    import {
+        listConversations, createConversation, listAgents,
+        streamChat, authHeaders
+    } from '../src/api.js';
+
+    // ── Auth guard ──────────────────────────────
+    if (sessionStorage.getItem('council_logged_in') !== 'true') {
+        window.location.href = '/login';
+    }
+
+    // ── State ──────────────────────────────────
+    let currentConvId = null;
+    let selectedAgent = null;
+    let agents = [];
+    let streaming = false;
+
+    // ── Elements ───────────────────────────────
+    const chatCanvas   = document.getElementById('chat-canvas');
+    const chatInput    = document.getElementById('chat-input');
+    const sendBtn      = document.getElementById('send-btn');
+    const convList     = document.getElementById('conv-list');
+    const newChatBtn   = document.getElementById('new-chat-btn');
+    const settingsBtn  = document.getElementById('settings-btn');
+    const logoutBtn    = document.getElementById('logout-btn');
+    const discussBtn   = document.getElementById('discuss-btn');
+
+    // ── Sidebar toggle (保留原有) ────────────────
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const icon = document.getElementById('toggle-icon');
+        const discussContainer = document.getElementById('discuss-button-container');
+        const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
+        if (isCollapsed) {
+            sidebar.classList.remove('sidebar-collapsed', 'collapsed');
+            sidebar.classList.add('sidebar-expanded');
+            icon.innerText = 'chevron_left';
+            discussContainer.style.left = '280px';
+        } else {
+            sidebar.classList.add('sidebar-collapsed', 'collapsed');
+            sidebar.classList.remove('sidebar-expanded');
+            icon.innerText = 'chevron_right';
+            discussContainer.style.left = '100px';
+        }
+    }
+    window.toggleSidebar = toggleSidebar;
+
+    // ── 加载角色 ────────────────────────────────
+    async function loadAgents() {
+        agents = await listAgents();
+        agents = agents.agents || [];
+        renderAgentPills();
+    }
+
+    function renderAgentPills() {
+        const container = document.getElementById('agent-pills');
+        if (!container) return;
+        container.innerHTML = '';
+        agents.forEach(agent => {
+            const isActive = agent.name === selectedAgent;
+            const btn = document.createElement('button');
+            btn.className = `rounded-full px-4 py-1.5 flex items-center gap-2 font-headline text-xs font-medium whitespace-nowrap transition-all active:scale-95 ${isActive ? 'bg-primary text-white shadow-sm' : 'bg-surface text-[#757c7b] hover:bg-outline-variant/30'}`;
+            btn.innerHTML = `<span class="material-symbols-outlined text-[16px]">${getAgentIcon(agent.name)}</span>${agent.display_name || agent.name}`;
+            btn.onclick = () => { selectedAgent = agent.name; renderAgentPills(); };
+            container.appendChild(btn);
+        });
+    }
+
+    function getAgentIcon(name) {
+        const icons = { strategist: 'architecture', perspectivist: 'visibility', supervisor: 'policy', social_coach: 'psychology', promoter: 'stars' };
+        return icons[name] || 'smart_toy';
+    }
+
+    // ── 加载对话列表 ────────────────────────────
+    async function loadConversations() {
+        const data = await listConversations();
+        const list = Array.isArray(data) ? data : [];
+        renderConversationList(list);
+    }
+
+    function renderConversationList(convs) {
+        if (!convList) return;
+        const header = convList.querySelector('.recent-header');
+        convList.innerHTML = '';
+        if (header) convList.appendChild(header);
+        if (convs.length === 0) {
+            convList.innerHTML += `<p class="text-xs text-outline px-4 py-2">暂无历史对话</p>`;
+            return;
+        }
+        convs.forEach(c => {
+            const a = document.createElement('a');
+            a.className = `nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-[#757c7b] hover:bg-white/30 transition-all active:scale-[0.98] ${currentConvId === c.id ? 'text-primary font-bold bg-white/50 border-r-4 border-primary' : ''}`;
+            a.href = '#';
+            a.innerHTML = `<span class="material-symbols-outlined shrink-0">forum</span><span class="sidebar-item-text truncate font-label text-sm">${c.title || '新对话'}</span>`;
+            a.onclick = (e) => { e.preventDefault(); loadConversation(c.id); };
+            convList.appendChild(a);
+        });
+    }
+
+    // ── 加载单个对话 ────────────────────────────
+    async function loadConversation(convId) {
+        currentConvId = convId;
+        const res = await fetch(`http://localhost:8000/api/conversations/${convId}`, {
+            headers: authHeaders()
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        renderMessages(data.messages || []);
+        renderConversationList(await listConversations());
+    }
+
+    function renderMessages(messages) {
+        if (!chatCanvas) return;
+        chatCanvas.innerHTML = '';
+        if (messages.length === 0) {
+            chatCanvas.innerHTML = document.getElementById('empty-state-template').innerHTML;
+            return;
+        }
+        messages.forEach(msg => {
+            appendMessage(msg);
+        });
+        scrollToBottom();
+    }
+
+    function appendMessage(msg) {
+        if (!chatCanvas) return;
+        // 移除空状态
+        const empty = chatCanvas.querySelector('.empty-state-container');
+        if (empty) empty.remove();
+
+        const isUser = msg.role === 'user';
+        const name = isUser ? '你' : (msg.agent_name || 'Council');
+        const color = isUser ? '#005bc4' : '#757c7b';
+        const bg = isUser ? 'bg-primary text-white' : 'bg-surface text-on-surface';
+        const time = msg.created_at ? new Date(msg.created_at).toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit'}) : '';
+
+        const div = document.createElement('div');
+        div.className = `flex gap-3 ${isUser ? 'flex-row-reverse' : ''} animate-fadeIn`;
+        div.innerHTML = `
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0 mt-1" style="background:${color}">
+                ${name.slice(0,1)}
+            </div>
+            <div class="flex flex-col gap-1 max-w-[70%] ${isUser ? 'items-end' : ''}">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold" style="color:${color}">${name}</span>
+                    <span class="text-[10px] text-outline">${time}</span>
+                </div>
+                <div class="${bg} px-4 py-3 rounded-2xl text-sm leading-relaxed">${escapeHtml(msg.content || '')}</div>
+            </div>`;
+        chatCanvas.appendChild(div);
+    }
+
+    function appendStreamingMessage(agentName, content) {
+        if (!chatCanvas) return;
+        const empty = chatCanvas.querySelector('.empty-state-container');
+        if (empty) empty.remove();
+
+        const color = '#757c7b';
+        const name = agentName || 'Council';
+        let bubble = chatCanvas.querySelector(`.streaming-bubble[data-agent="${agentName}"]`);
+        if (!bubble) {
+            bubble = document.createElement('div');
+            bubble.className = `flex gap-3 animate-fadeIn streaming-bubble`;
+            bubble.dataset.agent = agentName;
+            bubble.innerHTML = `
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0 mt-1" style="background:${color}">${name.slice(0,1)}</div>
+                <div class="flex flex-col gap-1 max-w-[70%]">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold" style="color:${color}">${name}</span>
+                        <span class="text-[10px] text-outline">typing...</span>
+                    </div>
+                    <div class="bg-surface px-4 py-3 rounded-2xl text-sm leading-relaxed text-on-surface"></div>
+                </div>`;
+            chatCanvas.appendChild(bubble);
+        }
+        bubble.querySelector('.rounded-2xl:last-child').textContent = content;
+        scrollToBottom();
+    }
+
+    function finishStreamingMessage(agentName) {
+        const bubble = chatCanvas?.querySelector(`.streaming-bubble[data-agent="${agentName}"]`);
+        if (bubble) {
+            bubble.querySelector('.text-outline').textContent = '';
+            bubble.classList.remove('streaming-bubble');
+        }
+    }
+
+    function scrollToBottom() {
+        chatCanvas?.scrollTo({ top: chatCanvas.scrollHeight, behavior: 'smooth' });
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    // ── 发送消息 ────────────────────────────────
+    async function handleSend() {
+        if (streaming) return;
+        const text = chatInput?.value.trim();
+        if (!text) return;
+
+        chatInput.value = '';
+        chatInput.style.height = 'auto';
+
+        // 创建/获取对话
+        if (!currentConvId) {
+            const conv = await createConversation(text.slice(0, 30));
+            currentConvId = conv.id;
+            await loadConversations();
+        }
+
+        // 渲染用户消息
+        appendMessage({ role: 'user', content: text, created_at: new Date().toISOString() });
+        scrollToBottom();
+
+        streaming = true;
+        sendBtn.disabled = true;
+
+        let currentMsgId = null;
+        let currentAgent = selectedAgent;
+
+        await streamChat(currentConvId, text, {
+            onToken: (token, agentName) => {
+                if (!token && agentName) {
+                    currentAgent = agentName;
+                    finishStreamingMessage(agentName);
+                } else if (token) {
+                    currentAgent = currentAgent || agentName || 'Council';
+                    appendStreamingMessage(currentAgent, (chatCanvas.querySelector(`.streaming-bubble[data-agent="${currentAgent}"] .rounded-2xl:last-child`)?.textContent || '') + token);
+                }
+            },
+            onDone: () => {
+                streaming = false;
+                sendBtn.disabled = false;
+                finishStreamingMessage(currentAgent);
+            },
+            onError: (err) => {
+                streaming = false;
+                sendBtn.disabled = false;
+                appendMessage({ role: 'assistant', agent_name: 'Council', content: `错误: ${err.message}`, created_at: new Date().toISOString() });
+            }
+        });
+    }
+
+    // ── 事件绑定 ────────────────────────────────
+    sendBtn?.addEventListener('click', handleSend);
+    chatInput?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSend();
+        }
+    });
+    chatInput?.addEventListener('input', () => {
+        chatInput.style.height = 'auto';
+        chatInput.style.height = Math.min(chatInput.scrollHeight, 150) + 'px';
+    });
+
+    newChatBtn?.addEventListener('click', async () => {
+        const conv = await createConversation('新对话');
+        currentConvId = conv.id;
+        if (chatCanvas) chatCanvas.innerHTML = document.getElementById('empty-state-template').innerHTML;
+        await loadConversations();
+    });
+
+    settingsBtn?.addEventListener('click', () => { window.location.href = '/providers'; });
+    logoutBtn?.addEventListener('click', () => {
+        sessionStorage.removeItem('council_logged_in');
+        window.location.href = '/login';
+    });
+    discussBtn?.addEventListener('click', () => { window.location.href = '/chat'; }); // 暂时跳转 chat
+
+    // ── 初始化 ────────────────────────────────
+    await loadAgents();
+    await loadConversations();
+</script>
+</body></html>

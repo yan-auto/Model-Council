@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Manrope:wght@200..800&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#f3f4f3",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed-dim": "#c1c8c7",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "background": "#f9f9f8",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed-variant": "#004395",
+                    "on-background": "#1a1c1c",
+                    "secondary-fixed": "#dde4e2",
+                    "on-tertiary-container": "#ffd0bc",
+                    "on-primary-container": "#cbdaff",
+                    "on-error": "#ffffff",
+                    "on-secondary-container": "#5f6665",
+                    "inverse-primary": "#adc6ff",
+                    "surface-container-high": "#e8e8e7",
+                    "secondary": "#59605f",
+                    "outline-variant": "#c2c6d5",
+                    "error": "#ba1a1a",
+                    "primary": "#004496",
+                    "inverse-on-surface": "#f1f1f0",
+                    "tertiary-fixed": "#ffdbcd",
+                    "on-surface": "#1a1c1c",
+                    "on-secondary": "#ffffff",
+                    "tertiary-container": "#a43f01",
+                    "on-primary-fixed": "#001a42",
+                    "error-container": "#ffdad6",
+                    "primary-fixed-dim": "#adc6ff",
+                    "on-surface-variant": "#424753",
+                    "on-error-container": "#93000a",
+                    "surface-dim": "#dadad9",
+                    "surface-tint": "#005ac2",
+                    "surface-container-highest": "#e2e2e2",
+                    "on-secondary-fixed-variant": "#414847",
+                    "on-secondary-fixed": "#161d1c",
+                    "surface": "#f9f9f8",
+                    "on-tertiary-fixed-variant": "#7c2e00",
+                    "primary-container": "#005bc4",
+                    "surface-bright": "#f9f9f8",
+                    "primary-fixed": "#d8e2ff",
+                    "outline": "#727784",
+                    "surface-variant": "#e2e2e2",
+                    "surface-container": "#eeeeed",
+                    "secondary-container": "#dde4e2",
+                    "inverse-surface": "#2f3130",
+                    "tertiary": "#7e2e00",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed": "#360f00"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Manrope"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-50 bg-[#f9f9f8] dark:bg-stone-950 flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-[10px] text-white font-bold">
+                UP
+            </div>
+<h1 class="font-['Space_Grotesk'] text-xl font-bold tracking-tight text-[#005bc4] dark:text-blue-400">Council Obsidian</h1>
+</div>
+<button class="material-symbols-outlined text-[#757c7b] active:scale-95 transition-transform" data-icon="more_vert">more_vert</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="px-6 py-4 max-w-md mx-auto">
+<!-- Header Section -->
+<div class="mb-8">
+<h2 class="font-['Space_Grotesk'] text-3xl font-bold tracking-tight mb-2">System Logs</h2>
+<p class="text-secondary font-body text-sm">Real-time audit trail of obsidian-grade intelligence operations.</p>
+</div>
+<!-- Filter Chips (The Committee Style) -->
+<div class="flex gap-2 overflow-x-auto pb-6 no-scrollbar">
+<span class="px-4 py-2 rounded-full bg-primary text-white text-[10px] font-bold font-label uppercase tracking-widest whitespace-nowrap">All Logs</span>
+<span class="px-4 py-2 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold font-label uppercase tracking-widest whitespace-nowrap">Security</span>
+<span class="px-4 py-2 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold font-label uppercase tracking-widest whitespace-nowrap">Neural Path</span>
+<span class="px-4 py-2 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold font-label uppercase tracking-widest whitespace-nowrap">Access</span>
+</div>
+<!-- Log List -->
+<div class="space-y-4">
+<!-- Log Entry 1 (Expanded/Detailed Style) -->
+<div class="bg-surface-container-low rounded-lg p-5 transition-all active:scale-[0.98]">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="security" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="text-[10px] font-bold font-label text-primary uppercase tracking-tighter">Security Protocol</span>
+</div>
+<span class="text-[10px] font-label text-secondary">14:22:01</span>
+</div>
+<div class="mb-4">
+<h3 class="font-headline font-bold text-sm text-on-surface">Encrypted handshake initiated</h3>
+<p class="text-secondary text-xs mt-1 font-body">Node 0x82... connected via TLS 1.3. Identity verified through Obsidian vault.</p>
+</div>
+<div class="pt-4 border-t border-outline-variant/15 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-5 h-5 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[10px] text-on-primary-fixed-variant" data-icon="shield">shield</span>
+</div>
+<span class="text-[10px] font-label text-secondary uppercase font-bold">Admin-01</span>
+</div>
+<button class="text-primary text-[10px] font-bold uppercase tracking-widest">Details</button>
+</div>
+</div>
+<!-- Log Entry 2 -->
+<div class="bg-surface-container-high/50 rounded-lg p-5">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="psychology">psychology</span>
+<span class="text-[10px] font-bold font-label text-secondary uppercase tracking-tighter">Intelligence Flow</span>
+</div>
+<span class="text-[10px] font-label text-secondary">14:19:45</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-sm text-on-surface">Knowledge distillation started</h3>
+<p class="text-secondary text-xs mt-1 font-body">Synthesizing multi-source input for Workspace alpha...</p>
+</div>
+</div>
+<!-- Log Entry 3 -->
+<div class="bg-surface-container-high/50 rounded-lg p-5">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-error text-sm" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="text-[10px] font-bold font-label text-error uppercase tracking-tighter">System Alert</span>
+</div>
+<span class="text-[10px] font-label text-secondary">14:15:10</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-sm text-on-surface">Rate limit proximity</h3>
+<p class="text-secondary text-xs mt-1 font-body">Intelligence API approaching 85% of tier threshold. Action required.</p>
+</div>
+</div>
+<!-- Log Entry 4 -->
+<div class="bg-surface-container-high/50 rounded-lg p-5">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="settings">settings</span>
+<span class="text-[10px] font-bold font-label text-secondary uppercase tracking-tighter">System Config</span>
+</div>
+<span class="text-[10px] font-label text-secondary">13:58:22</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-sm text-on-surface">Parameters updated</h3>
+<p class="text-secondary text-xs mt-1 font-body">Global temperature shifted from 0.7 to 0.4 for higher precision.</p>
+</div>
+</div>
+<!-- Log Entry 5 -->
+<div class="bg-surface-container-high/50 rounded-lg p-5">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="sync">sync</span>
+<span class="text-[10px] font-bold font-label text-secondary uppercase tracking-tighter">Database</span>
+</div>
+<span class="text-[10px] font-label text-secondary">13:40:00</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-sm text-on-surface">Index optimization complete</h3>
+<p class="text-secondary text-xs mt-1 font-body">Vector database maintenance finished in 124ms.</p>
+</div>
+</div>
+</div>
+<!-- Load More CTA -->
+<div class="mt-8 flex justify-center">
+<button class="bg-secondary-container text-on-secondary-container px-8 py-3 rounded-full font-label font-bold text-[10px] uppercase tracking-widest hover:bg-surface-container-highest transition-colors active:scale-95">
+                Load Historic Logs
+            </button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-8 pt-4 bg-white/92 dark:bg-stone-950/92 backdrop-blur-lg z-50 rounded-t-[32px] shadow-[0_-10px_40px_rgba(45,52,51,0.04)] border-t border-[#e8e8e7]/15 dark:border-stone-800">
+<a class="flex flex-col items-center justify-center text-[#757c7b] dark:text-stone-500 px-5 py-2 hover:text-[#005bc4] transition-all" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="grid_view">grid_view</span>
+<span class="font-['Inter'] text-[10px] font-semibold uppercase tracking-widest">Workspace</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#757c7b] dark:text-stone-500 px-5 py-2 hover:text-[#005bc4] transition-all" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="psychology">psychology</span>
+<span class="font-['Inter'] text-[10px] font-semibold uppercase tracking-widest">Intelligence</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#005bc4] text-white rounded-full px-5 py-2 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="settings" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-['Inter'] text-[10px] font-semibold uppercase tracking-widest">Settings</span>
+</a>
+</nav>
+</body></html>

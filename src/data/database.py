@@ -75,6 +75,100 @@ MIGRATIONS = [
     CREATE INDEX IF NOT EXISTS idx_messages_conversation
         ON messages(conversation_id, created_at);
     """,
+    # v2: 供应商、模型、角色表
+    """
+    CREATE TABLE IF NOT EXISTS providers (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        provider_type TEXT NOT NULL DEFAULT 'openai_compatible',
+        api_key TEXT NOT NULL DEFAULT '',
+        base_url TEXT NOT NULL DEFAULT '',
+        group_id TEXT DEFAULT '',
+        status TEXT NOT NULL DEFAULT 'active',
+        created_at REAL NOT NULL,
+        updated_at REAL NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS models (
+        id TEXT PRIMARY KEY,
+        provider_id TEXT NOT NULL,
+        model_name TEXT NOT NULL,
+        display_name TEXT NOT NULL DEFAULT '',
+        status TEXT NOT NULL DEFAULT 'active',
+        created_at REAL NOT NULL,
+        updated_at REAL NOT NULL,
+        FOREIGN KEY (provider_id) REFERENCES providers(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS agents (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL UNIQUE,
+        display_name TEXT NOT NULL DEFAULT '',
+        description TEXT NOT NULL DEFAULT '',
+        system_prompt TEXT NOT NULL DEFAULT '',
+        model_id TEXT,
+        personality_tone TEXT DEFAULT '',
+        personality_traits TEXT DEFAULT '[]',
+        personality_constraints TEXT DEFAULT '',
+        status TEXT NOT NULL DEFAULT 'active',
+        created_at REAL NOT NULL,
+        updated_at REAL NOT NULL,
+        FOREIGN KEY (model_id) REFERENCES models(id) ON DELETE SET NULL
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_models_provider ON models(provider_id);
+    CREATE INDEX IF NOT EXISTS idx_agents_model ON agents(model_id);
+    """,
+    # v3: 记忆系统（用户档案、对话摘要、角色记忆、待办承诺）
+    """
+    CREATE TABLE IF NOT EXISTS user_profile (
+        id TEXT PRIMARY KEY DEFAULT 'default',
+        name TEXT NOT NULL DEFAULT '',
+        background TEXT NOT NULL DEFAULT '',
+        goals TEXT NOT NULL DEFAULT '',
+        constraints TEXT NOT NULL DEFAULT '',
+        financial_baseline TEXT NOT NULL DEFAULT '',
+        current_projects TEXT NOT NULL DEFAULT '[]',
+        created_at REAL NOT NULL,
+        updated_at REAL NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS conversation_summaries (
+        id TEXT PRIMARY KEY,
+        conversation_id TEXT NOT NULL,
+        content TEXT NOT NULL DEFAULT '',
+        key_decisions TEXT NOT NULL DEFAULT '[]',
+        action_items TEXT NOT NULL DEFAULT '[]',
+        created_at REAL NOT NULL,
+        FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS agent_memories (
+        id TEXT PRIMARY KEY,
+        agent_name TEXT NOT NULL,
+        memory_type TEXT NOT NULL DEFAULT 'fact',
+        key TEXT NOT NULL,
+        value TEXT NOT NULL DEFAULT '',
+        created_at REAL NOT NULL,
+        updated_at REAL NOT NULL,
+        UNIQUE(agent_name, memory_type, key)
+    );
+
+    CREATE TABLE IF NOT EXISTS action_items (
+        id TEXT PRIMARY KEY,
+        conversation_id TEXT,
+        agent_name TEXT NOT NULL,
+        content TEXT NOT NULL,
+        status TEXT NOT NULL DEFAULT 'pending',
+        created_at REAL NOT NULL,
+        completed_at REAL
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_summaries_conv ON conversation_summaries(conversation_id);
+    CREATE INDEX IF NOT EXISTS idx_agent_memories_name ON agent_memories(agent_name);
+    CREATE INDEX IF NOT EXISTS idx_actions_status ON action_items(status);
+    """,
+    # v4: messages 支持图片（在 init_db 中特殊处理）
 ]
 
 
@@ -95,7 +189,14 @@ async def init_db() -> None:
     import time
     for i, sql in enumerate(MIGRATIONS, start=1):
         if i not in applied:
-            await db.executescript(sql)
+            if i == 4:
+                # v4: 安全添加 image_data 列（已存在则跳过）
+                cursor2 = await db.execute("PRAGMA table_info(messages)")
+                cols = {row[1] for row in await cursor2.fetchall()}
+                if "image_data" not in cols:
+                    await db.execute("ALTER TABLE messages ADD COLUMN image_data TEXT")
+            else:
+                await db.executescript(sql)
             await db.execute(
                 "INSERT INTO _migrations (version, applied_at) VALUES (?, ?)",
                 (i, time.time()),

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="/src/router.js"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#f1f1f0",
+                    "surface-tint": "#005ac2",
+                    "outline": "#727784",
+                    "surface-variant": "#e2e2e2",
+                    "on-tertiary-fixed": "#360f00",
+                    "primary-container": "#005bc4",
+                    "primary": "#004496",
+                    "secondary": "#59605f",
+                    "primary-fixed": "#d8e2ff",
+                    "surface-bright": "#f9f9f8",
+                    "surface-container-highest": "#e2e2e2",
+                    "secondary-container": "#dde4e2",
+                    "on-surface": "#1a1c1c",
+                    "on-secondary-fixed": "#161d1c",
+                    "tertiary-container": "#a43f01",
+                    "on-tertiary-fixed-variant": "#7c2e00",
+                    "inverse-surface": "#2f3130",
+                    "on-tertiary-container": "#ffd0bc",
+                    "on-primary-fixed": "#001a42",
+                    "on-surface-variant": "#424753",
+                    "secondary-fixed-dim": "#c1c8c7",
+                    "on-primary-container": "#cbdaff",
+                    "on-error-container": "#93000a",
+                    "on-secondary-container": "#5f6665",
+                    "tertiary-fixed": "#ffdbcd",
+                    "tertiary": "#7e2e00",
+                    "on-primary-fixed-variant": "#004395",
+                    "on-tertiary": "#ffffff",
+                    "surface": "#f9f9f8",
+                    "background": "#f9f9f8",
+                    "on-secondary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "inverse-primary": "#adc6ff",
+                    "error-container": "#ffdad6",
+                    "surface-dim": "#dadad9",
+                    "surface-container-high": "#e8e8e8",
+                    "surface-container": "#eeeeed",
+                    "surface-container-lowest": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-background": "#1a1c1c",
+                    "primary-fixed-dim": "#adc6ff",
+                    "surface-container-low": "#f3f4f3",
+                    "secondary-fixed": "#dde4e2",
+                    "outline-variant": "#c2c6d5",
+                    "on-secondary-fixed-variant": "#414847",
+                    "tertiary-fixed-dim": "#ffb596"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Manrope"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .tonal-shift {
+            transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-input {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(16px);
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased overflow-x-hidden">
+<!-- Sidebar Navigation -->
+<aside class="h-screen w-64 fixed left-0 top-0 border-r-0 bg-stone-100 dark:bg-stone-900 flex flex-col py-6 gap-2 z-50">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">shield_person</span>
+</div>
+<div>
+<h1 class="font-headline font-bold text-lg text-blue-700 tracking-tighter">The Atelier</h1>
+<p class="font-label text-[10px] tracking-widest uppercase text-stone-500">Protocol Active</p>
+</div>
+</div>
+<button class="w-full py-3 px-4 bg-primary text-on-primary rounded-full font-label text-sm font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">add</span>
+            New Collaboration
+        </button>
+</div>
+<nav class="flex-1 space-y-1 overflow-y-auto scrollbar-hide">
+<a class="flex items-center gap-3 px-6 py-3 text-stone-600 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 hover:pl-8 transition-all duration-200 font-manrope text-sm font-medium tracking-wide" href="#/chat">
+<span class="material-symbols-outlined">history</span>
+            Chat History
+        </a>
+<a class="flex items-center gap-3 px-6 py-3 bg-stone-200 dark:bg-stone-800 text-blue-700 dark:text-blue-300 rounded-r-full font-bold transition-all duration-200 font-manrope text-sm tracking-wide" href="#/roles">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">manage_accounts</span>
+            Role Management
+        </a>
+<a class="flex items-center gap-3 px-6 py-3 text-stone-600 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 hover:pl-8 transition-all duration-200 font-manrope text-sm font-medium tracking-wide" href="#/providers">
+<span class="material-symbols-outlined">conveyor_belt</span>
+            Suppliers
+        </a>
+<a class="flex items-center gap-3 px-6 py-3 text-stone-600 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 hover:pl-8 transition-all duration-200 font-manrope text-sm font-medium tracking-wide" href="#/logs">
+<span class="material-symbols-outlined">terminal</span>
+            System Logs
+        </a>
+<a class="flex items-center gap-3 px-6 py-3 text-stone-600 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 hover:pl-8 transition-all duration-200 font-manrope text-sm font-medium tracking-wide" href="#/history">
+<span class="material-symbols-outlined">inventory_2</span>
+            Archive
+        </a>
+</nav>
+<div class="mt-auto px-6 space-y-1 border-t border-stone-200/50 pt-4">
+<div class="flex items-center gap-3 mb-4 px-2">
+<img alt="Executive Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5QD3s7eh9VDQCFCc8c_mlx5vj3CiOqq58ul9WdWtAtLxhHf1kyB9YPDKEn0WY6gVY8BaUWzJ7cBG5_f0JkWYO3f1v8d3zayEHfPdQZdQlqsYwFs3MZgcqgz4zokLapcHdepgkohyhSpqdew7f-1KqloAxX_ZGXqo51rAdmWYIPu5Jmprytqu3kIV2orZiTYISxeii_GbnLudwG0WjWg8ItrlUk26pnErY0g9mSaljTgSUK1ArVrRzQtQhWAle5WjnxhC-04NY0fw"/>
+<div>
+<p class="font-label text-xs font-bold">Executive Profile</p>
+<p class="font-label text-[10px] text-stone-500">Tier: Enterprise</p>
+</div>
+</div>
+<a class="flex items-center gap-3 py-2 text-stone-600 hover:text-primary transition-colors font-label text-xs font-medium" href="#/profile">
+<span class="material-symbols-outlined text-sm">settings</span>
+            Settings
+        </a>
+<a class="flex items-center gap-3 py-2 text-stone-600 hover:text-primary transition-colors font-label text-xs font-medium" href="#/login" id="logout-link">
+<span class="material-symbols-outlined text-sm">logout</span>
+            Logout
+        </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen bg-surface pb-32">
+<!-- Top Navigation -->
+<header class="w-full top-0 sticky bg-stone-100/80 dark:bg-stone-900/80 backdrop-blur-md flex justify-between items-center px-12 h-16 z-40 border-b border-stone-200/50 dark:border-stone-800/50 transition-colors">
+<div class="flex items-center gap-8">
+<span class="font-headline tracking-tighter text-2xl font-extrabold text-blue-700 dark:text-blue-500">Council</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-stone-500 dark:text-stone-400 font-manrope text-sm hover:text-blue-600 dark:hover:text-blue-300 transition-colors" href="#">Dashboard</a>
+<a class="text-stone-500 dark:text-stone-400 font-manrope text-sm hover:text-blue-600 dark:hover:text-blue-300 transition-colors" href="#">Analytics</a>
+<a class="text-stone-500 dark:text-stone-400 font-manrope text-sm hover:text-blue-600 dark:hover:text-blue-300 transition-colors" href="#">Reports</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined text-stone-500 hover:text-primary cursor-pointer p-2 transition-colors">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-stone-50"></span>
+</div>
+<span class="material-symbols-outlined text-stone-500 hover:text-primary cursor-pointer p-2 transition-colors">account_circle</span>
+</div>
+</header>
+<!-- Content Area -->
+<div class="max-w-6xl mx-auto px-12 py-12">
+<!-- Header Section -->
+<div class="mb-12">
+<h2 class="font-headline text-4xl font-bold tracking-tight text-on-surface mb-2">Role Management</h2>
+<p class="text-secondary text-lg max-w-2xl font-light">
+                Orchestrate your AI committee by defining specific archetypes and selecting their core intelligence models.
+            </p>
+</div>
+<!-- Role Cards Grid (动态加载) -->
+<div id="role-cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
+<!-- Card 1: Facilitator -->
+<div class="bg-surface-container-low rounded-lg p-8 flex flex-col hover:shadow-xl hover:shadow-stone-200/50 transition-all duration-300 group border border-transparent hover:border-primary/10">
+<div class="flex justify-between items-start mb-6">
+<div class="w-16 h-16 rounded-2xl bg-primary-fixed flex items-center justify-center overflow-hidden shadow-sm">
+<img alt="Facilitator Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8qdWTJkWPao4Rax2zDCy3QKLk6ueZYSMHPKw41r3jvffQDI2cYa4UgEGGgvYQ-XCbrxCYmxikz231LEQfHcGzbXKAp2ivR8J0vdOeygIilhYzAaW5t52Wm7ELw6jTz8q37oW8uln-5tbHjCtUuxSXqCvxUCcQPhYBO0G2SWt_X55MEc_9X5hZAJlIbvj9PJ-vz-CGCNBAhHFZK_iz2MfNHknjqXOXGt6D5bW4pvOKwp5Fj-_pVN8I6njg6fawYbZYMXhaoAqNqtc"/>
+</div>
+<div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-stone-500 hover:text-primary hover:bg-surface-container-high rounded-full transition-all">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-2 text-stone-500 hover:text-error hover:bg-error-container rounded-full transition-all">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+<div class="flex-1 flex flex-col">
+<div class="flex items-center gap-2 mb-2">
+<h3 class="font-headline text-xl font-bold tracking-tight">Facilitator</h3>
+<span class="bg-primary-fixed text-on-primary-fixed font-label text-[10px] px-2 py-0.5 rounded-full uppercase tracking-widest font-bold">Primary</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-6 flex-1">
+                        Responsible for guiding discussion flow, synthesizing diverse viewpoints, and ensuring protocol adherence.
+                    </p>
+<div class="space-y-3 mt-auto">
+<label class="font-label text-[10px] font-bold text-stone-500 uppercase tracking-widest block">Model Architecture</label>
+<div class="relative">
+<select class="w-full appearance-none bg-surface-container-lowest border border-outline-variant/30 rounded-full px-5 py-3 font-body text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary/40 cursor-pointer shadow-sm transition-all outline-none">
+<option>GPT-4o (Omni)</option>
+<option>Claude 3.5 Sonnet</option>
+<option>Gemini 1.5 Pro</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2: Perspective -->
+<div class="bg-surface-container-low rounded-lg p-8 flex flex-col hover:shadow-xl hover:shadow-stone-200/50 transition-all duration-300 group border border-transparent hover:border-primary/10">
+<div class="flex justify-between items-start mb-6">
+<div class="w-16 h-16 rounded-2xl bg-secondary-fixed flex items-center justify-center overflow-hidden shadow-sm">
+<img alt="Perspective Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcyog-_AEqIFcUeY55AqdCGEtjglnlFNvaxL5r-m4MpC67hwcVaDFdfHVe7_2nqSBYeUUi7FLxX15sJ8OgcKivK6stbkNbYvMBJRVm7ounkShRgBHZT0kMCU95_104ZwP20Z_KpLPJzOanOMcXArZptxPZNxDd1tbXT4e6nRO0qwK6PmkVQRtidvc3dOn-px4VL9cClycctwQ94qVCJjt5BgjNxO-m_Np7liGKKCXzuOWxGZM4cf5lbySMZjVCG3zKH84P09LLKQY"/>
+</div>
+<div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-stone-500 hover:text-primary hover:bg-surface-container-high rounded-full transition-all">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-2 text-stone-500 hover:text-error hover:bg-error-container rounded-full transition-all">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+<div class="flex-1 flex flex-col">
+<div class="flex items-center gap-2 mb-2">
+<h3 class="font-headline text-xl font-bold tracking-tight">Perspective</h3>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-6 flex-1">
+                        Focuses on ethical implications and alternative viewpoints. Challenges consensus to prevent groupthink.
+                    </p>
+<div class="space-y-3 mt-auto">
+<label class="font-label text-[10px] font-bold text-stone-500 uppercase tracking-widest block">Model Architecture</label>
+<div class="relative">
+<select class="w-full appearance-none bg-surface-container-lowest border border-outline-variant/30 rounded-full px-5 py-3 font-body text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary/40 cursor-pointer shadow-sm transition-all outline-none">
+<option>Claude 3.5 Sonnet</option>
+<option>GPT-4o (Omni)</option>
+<option>Llama 3 70B</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 3: Tactician -->
+<div class="bg-surface-container-low rounded-lg p-8 flex flex-col hover:shadow-xl hover:shadow-stone-200/50 transition-all duration-300 group border border-transparent hover:border-primary/10">
+<div class="flex justify-between items-start mb-6">
+<div class="w-16 h-16 rounded-2xl bg-tertiary-fixed flex items-center justify-center overflow-hidden shadow-sm">
+<img alt="Tactician Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCx4Qgz3nXxWtwtzcmIFt_x7wecIld9atuvqnrekbHCkgEyDnwUCvyy3tvAcNFvOede2UIN71Ls-JxcaZ-qLFZqut4wvflAMqhk8JMWAN0wwFbC7X9HnPk3UlFXo1Rk2F4CxynJDhGhYnqlkazTwetMNdpgGPh6dDdJIBQvJr0f5UkX5zIyT-whcTzieaCZt_rxeXxKun-M9H94rs3V4VADeKeQz8bJayeHxlayZuZZelEsnaFb-vuNE0mx-wmcIrM1zPfLF1ScLUs"/>
+</div>
+<div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-stone-500 hover:text-primary hover:bg-surface-container-high rounded-full transition-all">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-2 text-stone-500 hover:text-error hover:bg-error-container rounded-full transition-all">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+<div class="flex-1 flex flex-col">
+<div class="flex items-center gap-2 mb-2">
+<h3 class="font-headline text-xl font-bold tracking-tight">Tactician</h3>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-6 flex-1">
+                        Analyzes technical feasibility, execution steps, and risk mitigation strategies for all proposed actions.
+                    </p>
+<div class="space-y-3 mt-auto">
+<label class="font-label text-[10px] font-bold text-stone-500 uppercase tracking-widest block">Model Architecture</label>
+<div class="relative">
+<select class="w-full appearance-none bg-surface-container-lowest border border-outline-variant/30 rounded-full px-5 py-3 font-body text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary/40 cursor-pointer shadow-sm transition-all outline-none">
+<option>GPT-4o (Omni)</option>
+<option>Claude 3 Opus</option>
+<option>Gemini 1.5 Flash</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 4: Overseer -->
+<div class="bg-surface-container-low rounded-lg p-8 flex flex-col hover:shadow-xl hover:shadow-stone-200/50 transition-all duration-300 group border border-transparent hover:border-primary/10">
+<div class="flex justify-between items-start mb-6">
+<div class="w-16 h-16 rounded-2xl bg-primary-fixed-dim flex items-center justify-center overflow-hidden shadow-sm">
+<img alt="Overseer Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRUd1Y54_i9ck4dpR4VgjhqeP0HXwsbIfixqRHssm6f_4Ecc78ZYnenCYoGckPZ3kGw3aGat4qoIVIOBAVqLoiyZ9xULCXaCY_I73apcFwO06B65wm2qaJjhkWDr5qNV8njsb_l-OKLt--_b-NMKdOczUvFVDSM0kHW0hapR_K_t_s8oIG5H1zJ-VOFJiLtAfmFRz-TGXXYmHvFRFeGb7TIBQ3v2MFn3f8p724JkaT8wgFmofH6SF1WkqMx2LHt0cFC7dTZRlks_c"/>
+</div>
+<div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-stone-500 hover:text-primary hover:bg-surface-container-high rounded-full transition-all">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-2 text-stone-500 hover:text-error hover:bg-error-container rounded-full transition-all">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+<div class="flex-1 flex flex-col">
+<div class="flex items-center gap-2 mb-2">
+<h3 class="font-headline text-xl font-bold tracking-tight">Overseer</h3>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-6 flex-1">
+                        Monitors for system constraints, hallucinations, and alignment with original user goals.
+                    </p>
+<div class="space-y-3 mt-auto">
+<label class="font-label text-[10px] font-bold text-stone-500 uppercase tracking-widest block">Model Architecture</label>
+<div class="relative">
+<select class="w-full appearance-none bg-surface-container-lowest border border-outline-variant/30 rounded-full px-5 py-3 font-body text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary/40 cursor-pointer shadow-sm transition-all outline-none">
+<option>GPT-4 Turbo</option>
+<option>GPT-4o (Omni)</option>
+<option>Claude 2.1</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 5: Mind Reader -->
+<div class="bg-surface-container-low rounded-lg p-8 flex flex-col hover:shadow-xl hover:shadow-stone-200/50 transition-all duration-300 group border border-transparent hover:border-primary/10">
+<div class="flex justify-between items-start mb-6">
+<div class="w-16 h-16 rounded-2xl bg-secondary-fixed-dim flex items-center justify-center overflow-hidden shadow-sm">
+<img alt="Mind Reader Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHyONeZi_0aFqRM52WxWYLnVip4Ji7-vilIvonnuDRwuHj57zAYAoY6vfB02Kz2AjkLaqnPn1z_6lEM0p1pb7bb9lmwm7rNUiD6g4_xGGVS35kihKJBiLb-m_08sQMNR0QuT3y4owDdDbOezUrziVAQQyllpdlg-Dg382YpQSZC6fr0zWYolL64KdmIF2JRfxLUd7sCI1oTBqKOUAvo7r_AA0y1Hrz9DTupOGlObhlNYXSXwWb9wotCR92yhI1T0_GrUBWtT4dq_U"/>
+</div>
+<div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-stone-500 hover:text-primary hover:bg-surface-container-high rounded-full transition-all">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-2 text-stone-500 hover:text-error hover:bg-error-container rounded-full transition-all">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+<div class="flex-1 flex flex-col">
+<div class="flex items-center gap-2 mb-2">
+<h3 class="font-headline text-xl font-bold tracking-tight">Mind Reader</h3>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-6 flex-1">
+                        Anticipates unstated user needs and psychological nuances in communication to refine intent.
+                    </p>
+<div class="space-y-3 mt-auto">
+<label class="font-label text-[10px] font-bold text-stone-500 uppercase tracking-widest block">Model Architecture</label>
+<div class="relative">
+<select class="w-full appearance-none bg-surface-container-lowest border border-outline-variant/30 rounded-full px-5 py-3 font-body text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary/40 cursor-pointer shadow-sm transition-all outline-none">
+<option>Claude 3.5 Sonnet</option>
+<option>Mistral Large</option>
+<option>GPT-4o (Omni)</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 6: Add New Role Button (Empty State) -->
+<div class="border-2 border-dashed border-outline-variant/50 rounded-lg p-8 flex flex-col items-center justify-center gap-6 hover:bg-white hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 cursor-pointer group bg-stone-50/50">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-stone-400 group-hover:text-primary group-hover:bg-primary-fixed transition-all duration-500 scale-90 group-hover:scale-100 shadow-inner">
+<span class="material-symbols-outlined text-3xl">add_circle</span>
+</div>
+<div class="text-center">
+<h3 class="font-headline text-lg font-bold text-stone-600 group-hover:text-primary transition-colors mb-1">New Role Archetype</h3>
+<p class="text-stone-400 text-sm font-body px-4">Define custom behaviors, logical constraints, and reasoning protocols</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Fixed Action Bar -->
+<div class="fixed bottom-0 left-64 right-0 h-24 bg-white/80 backdrop-blur-xl border-t border-stone-200/50 z-40 flex items-center justify-between px-12 shadow-[0_-10px_25px_-5px_rgba(0,0,0,0.05)]">
+<div class="flex items-center gap-6">
+<div class="flex -space-x-3">
+<div class="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-sm">
+<img alt="Member 1" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgWA9HBEkekWJQ7FtOLWPUpCGa1rZGEmwKNawILDvGARgtyyWcVnlm_L7gbKbWnwDHfPXpgn2XYNyWarYzh9HhL8qaU4iYLV9V-5m7-2CRJ9BN3y9HRPePURMAzw507PnnmHseMz-jTyt2oeIsnmbvBMnzJX0GmJNF9-UthJgNTOsTMBUpynZ98Hlid9bxJU_4-2wc5JK4Z8JGgBiJbpdPTS8_BYHVSn-5eE9dfRcNo5AzBwSy6iG_3GO6o9qSaeRuOmUwc_ljmJU"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-sm">
+<img alt="Member 2" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUoLS1KrDISJdEWsWUkplAghK5kh32sfHoewAJfM4P8iGNZSL9Pk0J_oHMo7fFAIGhaM2Z0eQ4U1zl_EUsWFPsCiP7h4iMqoH2TlMCz9BYnCwAu8NX2tIaD8-yN4IYAaM98IShRk4K1SkDIKRH1K1r2oddLnaYpx9azTfem1obecHYCmWhWyxgkQ2VQ6XdNJZdSnDWjobFqY0z-IyHpVHIuAXEkaLL4w9BML4Mf1a0p2S9IsvDV3lZd_oOX1Bt3ByNbExWprf33gQ"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-sm">
+<img alt="Member 3" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJuuGXDc75dWIQX-dEa0jQt63lWvRbaad882k2V5XJLdMjQV8gsOz_i5qia-J3QK9W1KFBWHO48joOGRg8R75SbubeRESP1LGGHjF2yks_fhRWt0h9Q_zY8EFB8dj_AjduqTA-SzqPrHO0nXwAXiCD49p5evf3zDSeoww9_VfMiAUnAxpmYf8ey_XqgUaSCp7mtZhm_E0YfZPXmpxZb75yzob3UUXgDlPmmAPYv0CzVR9IgtbuY_MKPsDXwWB2n9RNcMofvc4Vw44"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-white bg-stone-100 flex items-center justify-center text-[10px] font-bold text-stone-500 shadow-sm">+2</div>
+</div>
+<div>
+<span class="font-label text-[10px] font-bold text-stone-400 uppercase block tracking-widest leading-none mb-1">Committee Status</span>
+<span id="committee-status" class="font-label text-sm text-primary font-bold">Loading...</span>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="px-8 py-3 rounded-full font-label text-sm font-semibold text-secondary hover:bg-stone-100 transition-colors">
+            Discard Changes
+        </button>
+<button class="px-12 py-4 rounded-full font-label text-sm font-bold bg-primary text-on-primary shadow-xl shadow-primary/25 hover:scale-[1.03] active:scale-95 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">sync</span>
+            Synchronize Committee
+        </button>
+</div>
+</div>
+<script type="module">
+import { listAgents, listAllModels, updateAgentModel, deleteAgentAPI, authHeaders } from '../src/api.js';
+
+if (sessionStorage.getItem('council_logged_in') !== 'true') {
+    window.location.href = '/login';
+}
+
+const AGENT_COLORS = {
+    strategist: '#3b82f6', perspectivist: '#8b5cf6',
+    supervisor: '#10b981', social_coach: '#f43f5e', promoter: '#6366f1'
+};
+const AGENT_DISPLAY = {
+    strategist: 'Strategist', perspectivist: 'Perspective',
+    supervisor: 'Overseer', social_coach: 'Mind reader', promoter: 'Facilitator'
+};
+
+let agents = [];
+let models = [];
+
+async function init() {
+    const data = await listAgents();
+    agents = data.agents || [];
+    const mData = await listAllModels();
+    models = mData.models || [];
+    renderCards();
+    document.getElementById('committee-count').textContent = agents.length;
+    document.getElementById('committee-status').textContent = `${agents.length} Specialized Agents Active`;
+}
+
+function renderCards() {
+    const container = document.getElementById('role-cards-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    agents.forEach(agent => {
+        const card = createAgentCard(agent);
+        container.appendChild(card);
+    });
+
+    // Add New Role ghost card
+    const ghost = document.createElement('div');
+    ghost.className = 'border-2 border-dashed border-outline-variant/50 rounded-lg p-8 flex flex-col items-center justify-center gap-6 hover:bg-white hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 cursor-pointer group bg-stone-50/50';
+    ghost.innerHTML = `
+        <div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-stone-400 group-hover:text-primary group-hover:bg-primary-fixed transition-all duration-500 scale-90 group-hover:scale-100 shadow-inner">
+            <span class="material-symbols-outlined text-3xl">add_circle</span>
+        </div>
+        <div class="text-center">
+            <h3 class="font-headline text-lg font-bold text-stone-600 group-hover:text-primary transition-colors mb-1">New Role Archetype</h3>
+            <p class="text-stone-400 text-sm font-body px-4">Define custom behaviors and reasoning protocols</p>
+        </div>`;
+    ghost.onclick = () => { window.location.href = '/roles'; };
+    container.appendChild(ghost);
+}
+
+function createAgentCard(agent) {
+    const name = agent.display_name || AGENT_DISPLAY[agent.name] || agent.name;
+    const color = AGENT_COLORS[agent.name] || '#6366f1';
+    const modelOptions = models.map(m => `<option value="${m.id}" ${agent.model?.id === m.id ? 'selected' : ''}>${m.display_name || m.model_name}</option>`).join('');
+
+    const div = document.createElement('div');
+    div.className = 'bg-surface-container-low rounded-lg p-8 flex flex-col hover:shadow-xl hover:shadow-stone-200/50 transition-all duration-300 group border border-transparent hover:border-primary/10';
+    div.innerHTML = `
+        <div class="flex justify-between items-start mb-6">
+            <div class="w-16 h-16 rounded-2xl flex items-center justify-center overflow-hidden shadow-sm" style="background:${color}20">
+                <span class="material-symbols-outlined text-2xl font-bold" style="color:${color}">${name.slice(0, 1)}</span>
+            </div>
+            <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button class="delete-btn p-2 text-stone-500 hover:text-error hover:bg-error-container rounded-full transition-all" data-id="${agent.id}">
+                    <span class="material-symbols-outlined text-sm">delete</span>
+                </button>
+            </div>
+        </div>
+        <div class="flex-1 flex flex-col">
+            <div class="flex items-center gap-2 mb-2">
+                <h3 class="font-headline text-xl font-bold tracking-tight">${name}</h3>
+                ${agent.name === 'promoter' ? '<span class="bg-primary-fixed text-on-primary-fixed font-label text-[10px] px-2 py-0.5 rounded-full uppercase tracking-widest font-bold">Primary</span>' : ''}
+            </div>
+            <p class="text-on-surface-variant text-sm leading-relaxed mb-6 flex-1">${agent.description || 'No description'}</p>
+            <div class="space-y-3 mt-auto">
+                <label class="font-label text-[10px] font-bold text-stone-500 uppercase tracking-widest block">Model Architecture</label>
+                <div class="relative">
+                    <select class="model-select w-full appearance-none bg-surface-container-lowest border border-outline-variant/30 rounded-full px-5 py-3 font-body text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary/40 cursor-pointer shadow-sm transition-all outline-none" data-id="${agent.id}">
+                        <option value="">Default Model</option>
+                        ${modelOptions}
+                    </select>
+                    <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none">expand_more</span>
+                </div>
+            </div>
+        </div>`;
+
+    // Model change
+    div.querySelector('.model-select').addEventListener('change', async (e) => {
+        const modelId = e.target.value || null;
+        await updateAgentModel(agent.id, modelId);
+        const m = models.find(m => m.id === modelId);
+        showToast(`Model updated to ${m ? m.display_name : 'Default'}`);
+    });
+
+    // Delete
+    div.querySelector('.delete-btn').addEventListener('click', async () => {
+        if (!confirm(`Delete role "${name}"?`)) return;
+        await deleteAgentAPI(agent.id);
+        showToast('Role deleted');
+        init();
+    });
+
+    return div;
+}
+
+function showToast(msg) {
+    const container = document.getElementById('toast-container') || createToastContainer();
+    const toast = document.createElement('div');
+    toast.className = 'bg-white border border-stone-200 shadow-lg rounded-xl px-4 py-3 text-sm font-medium animate-fadeIn';
+    toast.textContent = msg;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+
+function createToastContainer() {
+    const div = document.createElement('div');
+    div.id = 'toast-container';
+    div.className = 'fixed top-6 right-6 z-50 flex flex-col gap-2';
+    document.body.appendChild(div);
+    return div;
+}
+
+document.getElementById('logout-link')?.addEventListener('click', (e) => {
+    if (e.target.closest('#logout-link').getAttribute('href') === '/login') {
+        e.preventDefault();
+        sessionStorage.removeItem('council_logged_in');
+        window.location.href = '/login';
+    }
+});
+
+init();
+</script>
+<style>
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.animate-fadeIn { animation: fadeIn 0.25s ease-out; }
+</style>
+</body></html>

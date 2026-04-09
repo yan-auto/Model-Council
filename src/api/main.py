@@ -7,12 +7,13 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from src.config import get_settings
 from src.data.database import init_db, close_db
 from src.api.middleware.auth import AuthMiddleware
 from src.api.middleware.rate_limit import RateLimitMiddleware
-from src.api.routes import chat, agents, discussion
+from src.api.routes import chat, agents, discussion, providers, profile
 
 logger = logging.getLogger("council")
 
@@ -24,6 +25,10 @@ async def lifespan(app: FastAPI):
     logger.info(f"Council v{settings.app.version} 启动中...")
     await init_db()
     logger.info("数据库初始化完成")
+    # 种子数据：供应商 + 角色（仅在为空时导入）
+    from src.data.seed import seed_initial_data
+    await seed_initial_data()
+    logger.info("种子数据检查完成")
     yield
     await close_db()
     logger.info("Council 已关闭")
@@ -39,7 +44,14 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
-    # CORS（本地开发允许全部）
+    # 鉴权
+    app.add_middleware(AuthMiddleware)
+
+    # 限流
+    rl = settings.rate_limit
+    app.add_middleware(RateLimitMiddleware, requests_per_minute=rl.requests_per_minute, burst=rl.burst)
+
+    # CORS（最后添加 = 最先执行，确保预检请求不被其他中间件拦截）
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
@@ -48,17 +60,12 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    # 鉴权
-    app.add_middleware(AuthMiddleware)
-
-    # 限流
-    rl = settings.rate_limit
-    app.add_middleware(RateLimitMiddleware, requests_per_minute=rl.requests_per_minute, burst=rl.burst)
-
     # 路由
     app.include_router(chat.router)
     app.include_router(agents.router)
+    app.include_router(providers.router)
     app.include_router(discussion.router)
+    app.include_router(profile.router)
 
     @app.get("/")
     async def root():
@@ -67,6 +74,12 @@ def create_app() -> FastAPI:
     @app.get("/health")
     async def health():
         return {"status": "ok"}
+
+    # 前端静态文件（Docker 部署时 web/dist 存在）
+    static_dir = settings.app.app_static_dir
+    if static_dir.exists():
+        app.mount("/assets", StaticFiles(directory=static_dir / "assets"), name="static-assets")
+        app.mount("/", StaticFiles(directory=static_dir, html=True), name="static")
 
     return app
 

@@ -13,6 +13,7 @@ async def create_message(
     role: MessageRole,
     content: str,
     agent_name: str | None = None,
+    image_data: str | None = None,
 ) -> Message:
     db = await get_db()
     msg = Message(
@@ -20,10 +21,11 @@ async def create_message(
         role=role,
         agent_name=agent_name,
         content=content,
+        image_data=image_data,
     )
     await db.execute(
-        "INSERT INTO messages (id, conversation_id, role, agent_name, content, created_at) VALUES (?, ?, ?, ?, ?, ?)",
-        (msg.id, msg.conversation_id, msg.role.value, msg.agent_name, msg.content, msg.created_at),
+        "INSERT INTO messages (id, conversation_id, role, agent_name, content, image_data, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        (msg.id, msg.conversation_id, msg.role.value, msg.agent_name, msg.content, msg.image_data, msg.created_at),
     )
     # 更新对话的 updated_at
     await db.execute(
@@ -41,7 +43,7 @@ async def get_messages(
 ) -> list[Message]:
     db = await get_db()
     cursor = await db.execute(
-        "SELECT id, conversation_id, role, agent_name, content, created_at "
+        "SELECT id, conversation_id, role, agent_name, content, image_data, created_at "
         "FROM messages WHERE conversation_id = ? ORDER BY created_at ASC LIMIT ? OFFSET ?",
         (conversation_id, limit, offset),
     )
@@ -53,6 +55,7 @@ async def get_messages(
             role=MessageRole(r["role"]),
             agent_name=r["agent_name"],
             content=r["content"],
+            image_data=r["image_data"],
             created_at=r["created_at"],
         )
         for r in rows
@@ -66,7 +69,7 @@ async def get_recent_messages(
     """获取最近 N 条消息（按时间正序）"""
     db = await get_db()
     cursor = await db.execute(
-        "SELECT id, conversation_id, role, agent_name, content, created_at "
+        "SELECT id, conversation_id, role, agent_name, content, image_data, created_at "
         "FROM messages WHERE conversation_id = ? ORDER BY created_at DESC LIMIT ?",
         (conversation_id, limit),
     )
@@ -79,6 +82,7 @@ async def get_recent_messages(
             role=MessageRole(r["role"]),
             agent_name=r["agent_name"],
             content=r["content"],
+            image_data=r["image_data"],
             created_at=r["created_at"],
         )
         for r in rows

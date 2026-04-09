@@ -23,6 +23,10 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         self._buckets: dict[str, list[float]] = defaultdict(list)
 
     async def dispatch(self, request: Request, call_next):
+        # CORS 预检请求跳过
+        if request.method == "OPTIONS":
+            return await call_next(request)
+
         # 限流只针对 API 路由
         if not request.url.path.startswith("/api"):
             return await call_next(request)

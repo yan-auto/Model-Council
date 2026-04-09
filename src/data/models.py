@@ -30,7 +30,166 @@ class AgentInfo(BaseModel):
     description: str
 
 
-# ── 消息 ──────────────────────────────────────────
+# ── 供应商 ──────────────────────────────────────────
+
+class ProviderType(str, Enum):
+    OPENAI_COMPATIBLE = "openai_compatible"
+    ANTHROPIC = "anthropic"
+    MINIMAX = "minimax"
+
+
+class Provider(BaseModel):
+    id: str = Field(default_factory=lambda: uuid.uuid4().hex[:12])
+    name: str
+    provider_type: ProviderType = ProviderType.OPENAI_COMPATIBLE
+    api_key: str = ""
+    base_url: str = ""
+    group_id: str = ""
+    status: str = "active"
+    created_at: float = Field(default_factory=time.time)
+    updated_at: float = Field(default_factory=time.time)
+
+
+class ProviderCreate(BaseModel):
+    name: str
+    provider_type: ProviderType = ProviderType.OPENAI_COMPATIBLE
+    api_key: str
+    base_url: str = ""
+    group_id: str = ""
+
+
+class ProviderUpdate(BaseModel):
+    name: str | None = None
+    api_key: str | None = None
+    base_url: str | None = None
+    group_id: str | None = None
+
+
+# ── 模型 ──────────────────────────────────────────
+
+class Model(BaseModel):
+    id: str = Field(default_factory=lambda: uuid.uuid4().hex[:12])
+    provider_id: str
+    model_name: str
+    display_name: str = ""
+    status: str = "active"
+    created_at: float = Field(default_factory=time.time)
+    updated_at: float = Field(default_factory=time.time)
+
+
+class ModelCreate(BaseModel):
+    provider_id: str
+    model_name: str
+    display_name: str = ""
+
+
+# ── 角色（数据库版） ──────────────────────────────
+
+class Agent(BaseModel):
+    """角色完整定义，从数据库加载"""
+    id: str = Field(default_factory=lambda: uuid.uuid4().hex[:12])
+    name: str
+    display_name: str = ""
+    description: str = ""
+    system_prompt: str = ""
+    model_id: str | None = None
+    personality_tone: str = ""
+    personality_traits: list[str] = Field(default_factory=list)
+    personality_constraints: str = ""
+    status: str = "active"
+    created_at: float = Field(default_factory=time.time)
+    updated_at: float = Field(default_factory=time.time)
+
+
+class AgentCreate(BaseModel):
+    name: str
+    display_name: str = ""
+    description: str = ""
+    system_prompt: str = ""
+    model_id: str | None = None
+    personality_tone: str = ""
+    personality_traits: list[str] = Field(default_factory=list)
+    personality_constraints: str = ""
+
+
+class AgentUpdate(BaseModel):
+    display_name: str | None = None
+    description: str | None = None
+    system_prompt: str | None = None
+    model_id: str | None = None
+    personality_tone: str | None = None
+    personality_traits: list[str] | None = None
+    personality_constraints: str | None = None
+
+
+class AgentModelUpdate(BaseModel):
+    model_id: str | None = None
+
+
+# ── 用户档案 ──────────────────────────────────────
+
+class UserProfile(BaseModel):
+    """用户个人档案（单行）"""
+    id: str = "default"
+    name: str = ""
+    background: str = ""
+    goals: str = ""
+    constraints: str = ""
+    financial_baseline: str = ""
+    current_projects: list[str] = Field(default_factory=list)
+    created_at: float = Field(default_factory=time.time)
+    updated_at: float = Field(default_factory=time.time)
+
+
+class UserProfileUpdate(BaseModel):
+    """更新用户档案请求"""
+    name: str | None = None
+    background: str | None = None
+    goals: str | None = None
+    constraints: str | None = None
+    financial_baseline: str | None = None
+    current_projects: list[str] | None = None
+
+
+# ── 对话摘要 ──────────────────────────────────────
+
+class ConversationSummary(BaseModel):
+    """对话摘要（长期记忆）"""
+    id: str = Field(default_factory=lambda: uuid.uuid4().hex[:16])
+    conversation_id: str
+    content: str = ""
+    key_decisions: list[str] = Field(default_factory=list)
+    action_items: list[str] = Field(default_factory=list)
+    created_at: float = Field(default_factory=time.time)
+
+
+# ── 角色记忆 ──────────────────────────────────────
+
+class AgentMemory(BaseModel):
+    """角色记住的关于用户的信息"""
+    id: str = Field(default_factory=lambda: uuid.uuid4().hex[:16])
+    agent_name: str
+    memory_type: str = "fact"  # fact / decision / pattern / preference
+    key: str = ""
+    value: str = ""
+    created_at: float = Field(default_factory=time.time)
+    updated_at: float = Field(default_factory=time.time)
+
+
+# ── 待办承诺 ──────────────────────────────────────
+
+class ActionItem(BaseModel):
+    """待办行动项"""
+    id: str = Field(default_factory=lambda: uuid.uuid4().hex[:16])
+    conversation_id: str | None = None
+    agent_name: str
+    content: str
+    status: str = "pending"  # pending / done / skipped
+    created_at: float = Field(default_factory=time.time)
+    completed_at: float | None = None
+
+
+# ── 消息 ────────────��─────────────────────────────
 
 class MessageRole(str, Enum):
     USER = "user"
@@ -45,6 +204,7 @@ class Message(BaseModel):
     role: MessageRole
     agent_name: str | None = None  # assistant 消息标记来自哪个角色
     content: str
+    image_data: str | None = None  # base64 图片数据，data:image/...;base64,...
     created_at: float = Field(default_factory=time.time)
 
 
@@ -53,6 +213,7 @@ class MessageCreate(BaseModel):
     content: str
     conversation_id: str | None = None  # 不传则自动创建新对话
     agent_name: str | None = None  # 指定路由到哪个角色，None 则走默认
+    image_data: str | None = None  # base64 图片数据
 
 
 # ── 对话 ──────────────────────────────────────────

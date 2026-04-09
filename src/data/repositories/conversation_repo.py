@@ -35,12 +35,22 @@ async def get_conversation(conv_id: str) -> Conversation | None:
     )
 
 
-async def list_conversations(limit: int = 50, offset: int = 0) -> list[Conversation]:
+async def list_conversations(limit: int = 50, offset: int = 0, status: str | None = None) -> list[Conversation]:
+    """列出对话，支持按 status 过滤"""
     db = await get_db()
-    cursor = await db.execute(
-        "SELECT id, title, status, created_at, updated_at FROM conversations ORDER BY updated_at DESC LIMIT ? OFFSET ?",
-        (limit, offset),
-    )
+    if status:
+        cursor = await db.execute(
+            "SELECT id, title, status, created_at, updated_at "
+            "FROM conversations WHERE status = ? "
+            "ORDER BY updated_at DESC LIMIT ? OFFSET ?",
+            (status, limit, offset),
+        )
+    else:
+        cursor = await db.execute(
+            "SELECT id, title, status, created_at, updated_at "
+            "FROM conversations ORDER BY updated_at DESC LIMIT ? OFFSET ?",
+            (limit, offset),
+        )
     rows = await cursor.fetchall()
     return [
         Conversation(

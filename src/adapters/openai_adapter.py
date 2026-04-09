@@ -45,9 +45,12 @@ class OpenAIAdapter(LLMAdapter):
     ) -> AsyncIterator[StreamChunk]:
         model = model or self._default_model
         url = f"{self._base_url}/chat/completions"
+        # 构建消息：支持 vision 格式（content 为 list）和平常文本（content 为 str）
+        def build_content(msg: ChatMessage) -> str | list:
+            return msg.content
         payload = {
             "model": model,
-            "messages": [{"role": m.role, "content": m.content} for m in messages],
+            "messages": [{"role": m.role, "content": build_content(m)} for m in messages],
             "temperature": temperature,
             "max_tokens": max_tokens,
             "stream": True,

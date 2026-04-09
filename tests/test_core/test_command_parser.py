@@ -15,15 +15,15 @@ class TestCommandParser:
 
     def test_at_agent(self):
         """@角色名 路由"""
-        cmd = parse_command("@promoter 这个方案怎么样")
+        cmd = parse_command("@strategist 这个方案怎么样")
         assert cmd.type == CommandType.CHAT
-        assert cmd.target_agent == "promoter"
+        assert cmd.target_agent == "strategist"
         assert cmd.content == "这个方案怎么样"
 
     def test_at_agent_no_content(self):
         """@角色名 但没有内容"""
         with pytest.raises(ValueError, match="后面需要有问题内容"):
-            parse_command("@promoter")
+            parse_command("@strategist")
 
     def test_discuss(self):
         """/discuss 指令"""

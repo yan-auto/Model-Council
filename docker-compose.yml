@@ -1,0 +1,27 @@
+# Council - 本地 AI 委员会
+# 用法：docker-compose up -d
+
+services:
+  council:
+    build: .
+    container_name: council
+    ports:
+      - "8000:8000"
+    volumes:
+      - council-data:/app/data
+      - ./config:/app/config:ro
+    environment:
+      - COUNCIL_AUTH_TOKEN=${COUNCIL_AUTH_TOKEN:-council-local}
+    env_file:
+      - .env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+
+volumes:
+  council-data:
+    driver: local

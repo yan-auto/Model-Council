@@ -58,7 +58,7 @@ def sample_messages():
             id="m2",
             conversation_id="conv1",
             role=MessageRole.ASSISTANT,
-            agent_name="promoter",
+            agent_name="strategist",
             content="你好！有什么我可以帮你的？",
         ),
     ]

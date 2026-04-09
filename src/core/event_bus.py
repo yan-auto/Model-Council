@@ -18,8 +18,13 @@ class EventType(str, Enum):
     MESSAGE_STREAMING = "message.streaming"
     # 讨论事件
     DISCUSSION_STARTED = "discussion.started"
+    DISCUSSION_AGENT_THINKING = "discussion.agent_thinking"
     DISCUSSION_AGENT_TURN = "discussion.agent_turn"
+    DISCUSSION_AGENT_DONE = "discussion.agent_done"
     DISCUSSION_ROUND_DONE = "discussion.round_done"
+    DISCUSSION_VOTE_START = "discussion.vote_start"
+    DISCUSSION_VOTE = "discussion.vote"
+    DISCUSSION_VOTE_RESULT = "discussion.vote_result"
     DISCUSSION_STOPPED = "discussion.stopped"
     DISCUSSION_CONSENSUS = "discussion.consensus"
     # 系统事件

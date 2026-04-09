@@ -17,7 +17,8 @@ from src.data.models import Message
 class ChatMessage:
     """发送给 LLM 的消息格式"""
     role: str  # system / user / assistant
-    content: str
+    # content: str 纯文本 或 [{"type": "text", "text": "..."}, {"type": "image_url", "image_url": {"url": "data:image/...;base64,..."}}]
+    content: str | list
 
 
 @dataclass

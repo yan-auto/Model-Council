@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Executive Protocol - Chat History &amp; Archives</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="/src/router.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Manrope:wght@200..800&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#f1f1f0",
+                        "surface-tint": "#005ac2",
+                        "outline": "#727784",
+                        "surface-variant": "#e2e2e2",
+                        "on-tertiary-fixed": "#360f00",
+                        "primary-container": "#005bc4",
+                        "primary": "#004496",
+                        "secondary": "#59605f",
+                        "primary-fixed": "#d8e2ff",
+                        "surface-bright": "#f9f9f8",
+                        "surface-container-highest": "#e2e2e2",
+                        "secondary-container": "#dde4e2",
+                        "on-surface": "#1a1c1c",
+                        "on-secondary-fixed": "#161d1c",
+                        "tertiary-container": "#a43f01",
+                        "on-tertiary-fixed-variant": "#7c2e00",
+                        "inverse-surface": "#2f3130",
+                        "on-tertiary-container": "#ffd0bc",
+                        "on-primary-fixed": "#001a42",
+                        "on-surface-variant": "#424753",
+                        "secondary-fixed-dim": "#c1c8c7",
+                        "on-primary-container": "#cbdaff",
+                        "on-error-container": "#93000a",
+                        "on-secondary-container": "#5f6665",
+                        "tertiary-fixed": "#ffdbcd",
+                        "tertiary": "#7e2e00",
+                        "on-primary-fixed-variant": "#004395",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#f9f9f8",
+                        "background": "#f9f9f8",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#adc6ff",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#dadad9",
+                        "surface-container-high": "#e8e8e7",
+                        "surface-container": "#eeeeed",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-background": "#1a1c1c",
+                        "primary-fixed-dim": "#adc6ff",
+                        "surface-container-low": "#f3f4f3",
+                        "secondary-fixed": "#dde4e2",
+                        "outline-variant": "#c2c6d5",
+                        "on-secondary-fixed-variant": "#414847",
+                        "tertiary-fixed-dim": "#ffb596"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tonal-shift {
+            transition: background-color 0.3s ease;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(16px);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<div class="flex min-h-screen">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 border-r-0 bg-stone-100 dark:bg-stone-900 flex flex-col py-6 gap-2 font-manrope text-sm font-medium tracking-wide">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-white">
+<span class="material-symbols-outlined">shield</span>
+</div>
+<div>
+<h1 class="font-headline font-bold text-lg text-blue-700 leading-tight">The Atelier</h1>
+<p class="text-[10px] uppercase tracking-widest text-stone-500">Protocol Active</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="mx-4 flex items-center px-4 py-3 bg-stone-200 dark:bg-stone-800 text-blue-700 dark:text-blue-300 rounded-r-full font-bold hover:pl-2 transition-all duration-200" href="#/history">
+<span class="material-symbols-outlined mr-3" data-icon="history">history</span>
+                    Chat History
+                </a>
+<a class="mx-4 flex items-center px-4 py-3 text-stone-600 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 hover:pl-2 transition-all duration-200" href="#/roles">
+<span class="material-symbols-outlined mr-3" data-icon="manage_accounts">manage_accounts</span>
+                    Role Management
+                </a>
+<a class="mx-4 flex items-center px-4 py-3 text-stone-600 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 hover:pl-2 transition-all duration-200" href="#/providers">
+<span class="material-symbols-outlined mr-3" data-icon="conveyor_belt">conveyor_belt</span>
+                    Suppliers
+                </a>
+<a class="mx-4 flex items-center px-4 py-3 text-stone-600 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 hover:pl-2 transition-all duration-200" href="#/logs">
+<span class="material-symbols-outlined mr-3" data-icon="terminal">terminal</span>
+                    System Logs
+                </a>
+<a class="mx-4 flex items-center px-4 py-3 text-stone-600 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 hover:pl-2 transition-all duration-200" href="#/history">
+<span class="material-symbols-outlined mr-3" data-icon="inventory_2">inventory_2</span>
+                    Archive
+                </a>
+</nav>
+<div class="px-4 mt-auto space-y-1">
+<a href="#/chat" class="w-full bg-primary hover:bg-primary-container text-white rounded-full py-3 px-4 flex items-center justify-center gap-2 mb-6 transition-all active:scale-95">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>New Collaboration</span>
+</a>
+<a class="flex items-center px-4 py-2 text-stone-600 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 rounded-lg transition-all" href="#/profile">
+<span class="material-symbols-outlined mr-3" data-icon="settings">settings</span>
+                    Settings
+                </a>
+<a class="flex items-center px-4 py-2 text-stone-600 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="help_outline">help_outline</span>
+                    Support
+                </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-64 bg-surface min-h-screen">
+<!-- TopNavBar -->
+<header class="w-full top-0 sticky bg-stone-50 dark:bg-stone-950 flex justify-between items-center px-8 h-16 w-full z-10">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-headline font-bold tracking-tighter text-blue-700 dark:text-blue-500">Executive Protocol</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-stone-500 dark:text-stone-400 font-manrope hover:text-blue-600 dark:hover:text-blue-300 transition-colors" href="#/chat">Dashboard</a>
+<a class="text-stone-500 dark:text-stone-400 font-manrope hover:text-blue-600 dark:hover:text-blue-300 transition-colors" href="#/chat">Analytics</a>
+<a class="text-stone-500 dark:text-stone-400 font-manrope hover:text-blue-600 dark:hover:text-blue-300 transition-colors" href="#/history">Reports</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<input class="bg-surface-container-low border-none rounded-full px-4 py-1.5 text-sm w-64 focus:ring-1 focus:ring-primary/20 transition-all font-label" placeholder="Search protocol archives..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-1.5 text-stone-400 text-lg">search</span>
+</div>
+<button class="p-2 text-stone-500 hover:bg-stone-200 rounded-full transition-all">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-stone-500 hover:bg-stone-200 rounded-full transition-all">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Page Header Area -->
+<section class="px-12 py-10">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="font-headline text-5xl font-bold tracking-tight text-on-surface mb-2">Chat History</h2>
+<p class="text-secondary font-body text-lg">Manage and review previous executive sessions.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2.5 rounded-full border border-outline-variant hover:bg-surface-container-low transition-all font-label font-semibold text-sm">
+                            Export All
+                        </button>
+<button class="px-6 py-2.5 rounded-full bg-primary text-white hover:bg-primary-container transition-all font-label font-semibold text-sm">
+                            Filter Results
+                        </button>
+</div>
+</div>
+<!-- Featured / Recent Activity Bento Grid -->
+<div class="grid grid-cols-12 gap-6 mb-12">
+<div class="col-span-8 bg-surface-container-low rounded-lg p-8 relative overflow-hidden group">
+<div class="relative z-10">
+<span class="bg-primary-fixed text-on-primary-fixed text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest font-label mb-6 inline-block">Active Session</span>
+<h3 class="font-headline text-3xl font-bold mb-4 max-w-md">Market Entry Strategy: Asia-Pacific Expansion</h3>
+<div class="flex items-center gap-4 mb-8">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full bg-tertiary-fixed flex items-center justify-center border-2 border-surface-container-low">
+<span class="material-symbols-outlined text-xs">smart_toy</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center border-2 border-surface-container-low">
+<span class="material-symbols-outlined text-xs">person</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center border-2 border-surface-container-low">
+<span class="material-symbols-outlined text-xs">monitoring</span>
+</div>
+</div>
+<span class="text-sm font-label text-secondary">3 Committee Members • 14m ago</span>
+</div>
+<button class="bg-white text-primary rounded-full px-6 py-2 font-bold text-sm shadow-sm hover:shadow-md transition-all">Resume Conversation</button>
+</div>
+<div class="absolute right-0 bottom-0 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[160px]" style="font-variation-settings: 'FILL' 1;">forum</span>
+</div>
+</div>
+<div class="col-span-4 bg-surface-container-high rounded-lg p-8 flex flex-col justify-between">
+<div>
+<h4 class="font-headline font-bold text-xl mb-2">Protocol Status</h4>
+<p class="text-sm text-secondary font-body">All neural links active. Archive synchronization at 98.4%.</p>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant/20">
+<div class="flex justify-between items-center text-xs font-label uppercase tracking-wider mb-2">
+<span>Storage Capacity</span>
+<span>2.4 GB / 10 GB</span>
+</div>
+<div class="w-full bg-stone-300 rounded-full h-1">
+<div class="bg-primary h-1 rounded-full" style="width: 24%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Chat Archive Table List -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden border border-outline-variant/10">
+<div class="grid grid-cols-12 px-8 py-5 border-b border-outline-variant/10 text-xs font-label font-bold uppercase tracking-widest text-secondary bg-surface-container-low/30">
+<div class="col-span-5">Project Title</div>
+<div class="col-span-2">Last Updated</div>
+<div class="col-span-3 text-center">Committee</div>
+<div class="col-span-2 text-right">Actions</div>
+</div>
+<!-- Row 1 -->
+<div class="grid grid-cols-12 px-8 py-6 items-center hover:bg-surface-container-low/50 transition-all border-b border-outline-variant/5">
+<div class="col-span-5 flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">description</span>
+</div>
+<div>
+<h5 class="font-body font-bold text-on-surface">Market Entry Strategy</h5>
+<p class="text-xs text-secondary font-label">Strategic Planning • 1.2k tokens</p>
+</div>
+</div>
+<div class="col-span-2 text-sm text-secondary font-body">Oct 24, 2023</div>
+<div class="col-span-3 flex justify-center gap-2">
+<span class="material-symbols-outlined text-stone-400 text-sm p-1.5 rounded-md bg-stone-100" style="font-variation-settings: 'FILL' 1;" title="Strategist">insights</span>
+<span class="material-symbols-outlined text-stone-400 text-sm p-1.5 rounded-md bg-stone-100" style="font-variation-settings: 'FILL' 1;" title="Analyst">analytics</span>
+<span class="material-symbols-outlined text-stone-400 text-sm p-1.5 rounded-md bg-stone-100" style="font-variation-settings: 'FILL' 1;" title="Compliance">gavel</span>
+</div>
+<div class="col-span-2 flex justify-end gap-2">
+<button class="p-2 text-primary hover:bg-primary/10 rounded-full transition-all" title="Open">
+<span class="material-symbols-outlined">open_in_new</span>
+</button>
+<button class="p-2 text-secondary hover:bg-stone-200 rounded-full transition-all" title="Archive">
+<span class="material-symbols-outlined">archive</span>
+</button>
+<button class="p-2 text-error hover:bg-error/10 rounded-full transition-all" title="Delete">
+<span class="material-symbols-outlined">delete_outline</span>
+</button>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="grid grid-cols-12 px-8 py-6 items-center hover:bg-surface-container-low/50 transition-all border-b border-outline-variant/5">
+<div class="col-span-5 flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div>
+<h5 class="font-body font-bold text-on-surface">Risk Assessment Q3</h5>
+<p class="text-xs text-secondary font-label">Compliance • 450 tokens</p>
+</div>
+</div>
+<div class="col-span-2 text-sm text-secondary font-body">Oct 19, 2023</div>
+<div class="col-span-3 flex justify-center gap-2">
+<span class="material-symbols-outlined text-stone-400 text-sm p-1.5 rounded-md bg-stone-100" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="material-symbols-outlined text-stone-400 text-sm p-1.5 rounded-md bg-stone-100" style="font-variation-settings: 'FILL' 1;">gavel</span>
+</div>
+<div class="col-span-2 flex justify-end gap-2">
+<button class="p-2 text-primary hover:bg-primary/10 rounded-full transition-all">
+<span class="material-symbols-outlined">open_in_new</span>
+</button>
+<button class="p-2 text-secondary hover:bg-stone-200 rounded-full transition-all">
+<span class="material-symbols-outlined">archive</span>
+</button>
+<button class="p-2 text-error hover:bg-error/10 rounded-full transition-all">
+<span class="material-symbols-outlined">delete_outline</span>
+</button>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="grid grid-cols-12 px-8 py-6 items-center hover:bg-surface-container-low/50 transition-all border-b border-outline-variant/5">
+<div class="col-span-5 flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">rocket_launch</span>
+</div>
+<div>
+<h5 class="font-body font-bold text-on-surface">Project Alpha Oversight</h5>
+<p class="text-xs text-secondary font-label">Project Management • 2.8k tokens</p>
+</div>
+</div>
+<div class="col-span-2 text-sm text-secondary font-body">Oct 12, 2023</div>
+<div class="col-span-3 flex justify-center gap-2">
+<span class="material-symbols-outlined text-stone-400 text-sm p-1.5 rounded-md bg-stone-100" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="material-symbols-outlined text-stone-400 text-sm p-1.5 rounded-md bg-stone-100" style="font-variation-settings: 'FILL' 1;">architecture</span>
+</div>
+<div class="col-span-2 flex justify-end gap-2">
+<button class="p-2 text-primary hover:bg-primary/10 rounded-full transition-all">
+<span class="material-symbols-outlined">open_in_new</span>
+</button>
+<button class="p-2 text-secondary hover:bg-stone-200 rounded-full transition-all">
+<span class="material-symbols-outlined">archive</span>
+</button>
+<button class="p-2 text-error hover:bg-error/10 rounded-full transition-all">
+<span class="material-symbols-outlined">delete_outline</span>
+</button>
+</div>
+</div>
+<!-- Row 4 -->
+<div class="grid grid-cols-12 px-8 py-6 items-center hover:bg-surface-container-low/50 transition-all border-b border-outline-variant/5">
+<div class="col-span-5 flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">corporate_fare</span>
+</div>
+<div>
+<h5 class="font-body font-bold text-on-surface">Internal Restructuring Review</h5>
+<p class="text-xs text-secondary font-label">Human Resources • 890 tokens</p>
+</div>
+</div>
+<div class="col-span-2 text-sm text-secondary font-body">Sep 28, 2023</div>
+<div class="col-span-3 flex justify-center gap-2">
+<span class="material-symbols-outlined text-stone-400 text-sm p-1.5 rounded-md bg-stone-100" style="font-variation-settings: 'FILL' 1;">work</span>
+</div>
+<div class="col-span-2 flex justify-end gap-2">
+<button class="p-2 text-primary hover:bg-primary/10 rounded-full transition-all">
+<span class="material-symbols-outlined">open_in_new</span>
+</button>
+<button class="p-2 text-secondary hover:bg-stone-200 rounded-full transition-all">
+<span class="material-symbols-outlined">archive</span>
+</button>
+<button class="p-2 text-error hover:bg-error/10 rounded-full transition-all">
+<span class="material-symbols-outlined">delete_outline</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Footer Pagination -->
+<div class="flex justify-between items-center mt-10">
+<p class="text-sm font-label text-secondary">Showing 4 of 128 recorded sessions</p>
+<div class="flex gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-full border border-outline-variant hover:bg-stone-200 text-secondary transition-all">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-white font-bold text-sm">1</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stone-200 font-bold text-sm">2</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stone-200 font-bold text-sm">3</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full border border-outline-variant hover:bg-stone-200 text-secondary transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Background Decoration -->
+<div class="fixed top-0 right-0 -z-10 w-1/2 h-full opacity-30 pointer-events-none">
+<div class="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-primary-container/10 via-transparent to-transparent"></div>
+</div>
+
+<script type="module">
+import { listConversations } from '../src/api.js';
+
+async function loadHistory() {
+  const container = document.querySelector('.grid.cols-12.gap-6.mb-12');
+  if (!container) return;
+  try {
+    const data = await listConversations();
+    const convs = data.conversations || [];
+    if (convs.length > 0) {
+      // Update the featured card with the most recent conversation
+      const featured = container.querySelector('.col-span-8');
+      const mostRecent = convs[0];
+      if (featured && mostRecent) {
+        const titleEl = featured.querySelector('h3');
+        if (titleEl) titleEl.textContent = mostRecent.title || 'Untitled Session';
+        const timeEl = featured.querySelector('.font-label.text-secondary');
+        if (timeEl && mostRecent.updated_at) {
+          const date = new Date(mostRecent.updated_at);
+          timeEl.textContent = `${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+        }
+        const resumeBtn = featured.querySelector('button');
+        if (resumeBtn) resumeBtn.onclick = () => { window.location.href = `/chat?conv=${mostRecent.id}`; };
+      }
+    }
+  } catch (e) {
+    // Keep hardcoded data on error
+  }
+}
+
+loadHistory();
+</script>
+</body></html>

@@ -8,7 +8,7 @@ from functools import lru_cache
 
 import yaml
 from pydantic import Field
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 # ── 项目根目录 ──────────────────────────────────────
@@ -22,6 +22,11 @@ class AppConfig(BaseSettings):
     version: str = "0.1.0"
     host: str = "0.0.0.0"
     port: int = 8000
+
+    @property
+    def app_static_dir(self) -> Path:
+        """前端静态文件目录（Docker 部署用）"""
+        return PROJECT_ROOT / "web" / "dist"
 
 
 class DataConfig(BaseSettings):
@@ -59,6 +64,12 @@ class RateLimitConfig(BaseSettings):
 
 class Settings(BaseSettings):
     """顶层设置，合并所有子配置"""
+
+    model_config = SettingsConfigDict(
+        env_file=str(PROJECT_ROOT / ".env"),
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
     app: AppConfig = AppConfig()
     data: DataConfig = DataConfig()

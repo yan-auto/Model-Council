@@ -1,22 +1,28 @@
 """Command Parser —— 指令解析层
 
-解析 @角色名、/discuss、/stop 等指令。
+解析 @角色名、@all、/discuss、/stop 等指令。
 这些指令不走 LLM，纯规则匹配。
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 
 from src.core.agent_loader import load_all_agents, get_default_agent_name
 
 
 class CommandType(str, Enum):
-    CHAT = "chat"          # 普通聊天
-    DISCUSS = "discuss"    # 开启讨论
+    CHAT = "chat"          # 普通聊天（单个角色）
+    CHAT_ALL = "chat_all"  # 发给所有活跃角色
+    DISCUSS = "discuss"     # 开启讨论
     STOP = "stop"          # 停止讨论
-    SWITCH = "switch"      # 切换角色
+    ADD_AGENT = "add_agent"     # 添加角色
+    REMOVE_AGENT = "remove_agent"  # 移除角色
+    LIST_AGENTS = "list_agents"    # 列出所有角色
+    MEMORY = "memory"       # 查看记忆状态
+    SAVE = "save"           # 手动保存记忆
+    CHANGE_MODEL = "change_model"  # 换模型
 
 
 @dataclass
@@ -25,6 +31,8 @@ class ParsedCommand:
     raw: str
     content: str           # 去掉指令前缀后的实际内容
     target_agent: str | None = None  # @角色名 指定的目标角色
+    # 附加参数（不同指令类型用不同字段）
+    extra: dict = field(default_factory=dict)
 
 
 def parse_command(raw: str) -> ParsedCommand:
@@ -32,12 +40,17 @@ def parse_command(raw: str) -> ParsedCommand:
     解析用户输入，返回 ParsedCommand。
 
     规则：
-    - 以 /discuss 开头 → 讨论模式
-    - 以 /stop 开头 → 停止
-    - 以 @角色名 开头 → 路由到指定角色
-    - 其他 → 普通聊天
-
-    所有指令都需要有内容，纯粹的 /stop 也视为停止当前讨论。
+    - /stop → 停止讨论
+    - /discuss → 讨论模式
+    - /add <角色> → 添加角色
+    - /remove <角色> → 移除角色
+    - /list → 列出所有角色
+    - /memory → 查看记忆状态
+    - /save → 保存记忆
+    - /model <角色> <模型> → 换模型
+    - @all → 发给所有活跃角色
+    - @角色名 → 发给指定角色
+    - 其他 → 普通聊天（默认角色）
     """
     text = raw.strip()
     agents = {a.name: a.name for a in load_all_agents()}
@@ -59,8 +72,83 @@ def parse_command(raw: str) -> ParsedCommand:
             content=text[8:].strip(),
         )
 
+    # /add <角色>
+    if text.lower().startswith("/add"):
+        rest = text[4:].strip()
+        return ParsedCommand(
+            type=CommandType.ADD_AGENT,
+            raw=raw,
+            content=rest,
+            target_agent=rest or None,
+        )
+
+    # /remove <角色>
+    if text.lower().startswith("/remove"):
+        rest = text[7:].strip()
+        return ParsedCommand(
+            type=CommandType.REMOVE_AGENT,
+            raw=raw,
+            content=rest,
+            target_agent=rest or None,
+        )
+
+    # /list
+    if text.lower().startswith("/list"):
+        return ParsedCommand(
+            type=CommandType.LIST_AGENTS,
+            raw=raw,
+            content="",
+        )
+
+    # /memory
+    if text.lower().startswith("/memory"):
+        return ParsedCommand(
+            type=CommandType.MEMORY,
+            raw=raw,
+            content="",
+        )
+
+    # /save
+    if text.lower().startswith("/save"):
+        return ParsedCommand(
+            type=CommandType.SAVE,
+            raw=raw,
+            content="",
+        )
+
+    # /model <agent_name> <model_name>
+    if text.lower().startswith("/model"):
+        parts = text[6:].strip().split(maxsplit=1)
+        if len(parts) == 2:
+            return ParsedCommand(
+                type=CommandType.CHANGE_MODEL,
+                raw=raw,
+                content=parts[1],        # model_name
+                target_agent=parts[0],   # agent_name
+            )
+        elif len(parts) == 1:
+            return ParsedCommand(
+                type=CommandType.CHANGE_MODEL,
+                raw=raw,
+                content=parts[0],
+                target_agent=None,
+            )
+        else:
+            raise ValueError("/model 需要参数：/model <角色名> <模型名>")
+
+    # @all → 发给所有活跃角色
+    if text.startswith("@all"):
+        rest = text[4:].strip()
+        if not rest:
+            raise ValueError("@all 后面需要有问题内容")
+        return ParsedCommand(
+            type=CommandType.CHAT_ALL,
+            raw=raw,
+            content=rest,
+            target_agent=None,
+        )
+
     # @角色名
-    # 匹配最长前缀（如 @promoter-test 不应匹配 @promoter）
     matched_agent = None
     for name in sorted(agents.keys(), key=len, reverse=True):
         if text.startswith(f"@{name}"):
@@ -74,7 +162,6 @@ def parse_command(raw: str) -> ParsedCommand:
                     target_agent=matched_agent,
                 )
             else:
-                # 只有 @角色名 没有内容，报错
                 raise ValueError(f"@{name} 后面需要有问题内容")
 
     # 普通聊天，默认角色
@@ -82,5 +169,5 @@ def parse_command(raw: str) -> ParsedCommand:
         type=CommandType.CHAT,
         raw=raw,
         content=text,
-        target_agent=None,  # None = 默认角色
+        target_agent=None,
     )

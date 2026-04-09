@@ -9,8 +9,11 @@ from src.data.database import reset_db
 
 @pytest.fixture(autouse=True)
 async def fresh_db():
-    """每个测试前重置数据库到干净的内存状态"""
+    """每个测试前重置数据库到干净的内存状态 + 种子数据"""
     await reset_db()
+    # 导入种子数据（供应商 + 角色）
+    from src.data.seed import seed_initial_data
+    await seed_initial_data()
 
 
 @pytest.fixture
@@ -45,7 +48,7 @@ class TestAgentsEndpoint:
         data = res.json()
         assert "agents" in data
         names = [a["name"] for a in data["agents"]]
-        assert "promoter" in names
+        assert "strategist" in names
         assert "perspectivist" in names
 
 

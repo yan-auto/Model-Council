@@ -18,6 +18,10 @@ PUBLIC_PATHS = {"/", "/health", "/docs", "/openapi.json", "/redoc"}
 
 class AuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
+        # CORS 预检请求直接放行
+        if request.method == "OPTIONS":
+            return await call_next(request)
+
         # WebSocket 升级走 query param
         if request.url.path in PUBLIC_PATHS:
             return await call_next(request)
